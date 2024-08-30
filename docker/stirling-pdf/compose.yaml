@@ -17,6 +17,7 @@ services:
       UI_HOMEDESCRIPTION: "Your locally hosted one-stop-shop for all your PDF needs."
       UI_APPNAMENAVBAR: "Stirling PDF"
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config/training-data:/usr/share/tessdata" # Required for extra OCR languages
       - "./config/extra:/configs"
     networks:
