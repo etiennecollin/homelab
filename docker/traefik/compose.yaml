@@ -17,8 +17,11 @@ services:
       - "./config/config.yaml:/config.yaml:ro"
       - "./config/acme_production.json:/acme_production.json"
       - "./config/acme_staging.json:/acme_staging.json"
+    environment:
+      DOMAIN: ${DOMAIN}
+      PUBLIC_EMAIL: ${PUBLIC_EMAIL}
     env_file:
-      - "../.env"
+      - "./secret.env"
       - "./traefik.env"
     labels:
       - "traefik.enable=true"

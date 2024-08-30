@@ -1,5 +1,10 @@
 # Traefik
 
+The Clouflare token requires:
+
+- `Zone.Zone:Read`
+- `Zone.DNS:Edit`
+
 Create the `proxy` network
 
 ```bash
