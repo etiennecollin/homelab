@@ -1,0 +1,30 @@
+---
+services:
+  traefik:
+    image: "traefik:v3.1.2"
+    container_name: "traefik"
+    restart: "unless-stopped"
+    security_opt:
+      - "no-new-privileges:true"
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "443:443/tcp" # Uncomment if you want HTTP3
+      # - "443:443/udp" # Uncomment if you want HTTP3
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./config/config.yaml:/config.yaml:ro"
+      - "./config/acme_production.json:/acme_production.json"
+      - "./config/acme_staging.json:/acme_staging.json"
+    env_file:
+      - "../.env"
+      - "./traefik.env"
+    labels:
+      - "traefik.enable=true"
+    networks:
+      - "proxy"
+
+networks:
+  proxy:
+    external: "true"

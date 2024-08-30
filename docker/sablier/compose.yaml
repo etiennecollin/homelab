@@ -1,0 +1,19 @@
+---
+services:
+  sablier:
+    image: "acouvreur/sablier:1.7.0"
+    container_name: "sablier"
+    restart: "unless-stopped"
+    command:
+      - "start"
+      - "--provider.name=docker"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      - "traefik.enable=true"
+    networks:
+      - "proxy"
+
+networks:
+  proxy:
+    external: "true"

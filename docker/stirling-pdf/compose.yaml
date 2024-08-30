@@ -1,0 +1,27 @@
+---
+services:
+  stirling-pdf:
+    image: "frooodle/s-pdf:latest"
+    container_name: "stirling-pdf"
+    restart: "unless-stopped"
+    environment:
+      DOCKER_ENABLE_SECURITY: "true"
+      INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
+      LANGS: "en_GB,en_US,fr_FR"
+      SECURITY_ENABLELOGIN: "true"
+      SECURITY_CSRFDISABLED: "false"
+      SYSTEM_SHOWUPDATE: "true"
+      SYSTEM_SHOWUPDATEONLYADMIN: "true"
+      METRICS_ENABLE: "false"
+      UI_APPNAME: "Stirling PDF"
+      UI_HOMEDESCRIPTION: "Your locally hosted one-stop-shop for all your PDF needs."
+      UI_APPNAMENAVBAR: "Stirling PDF"
+    volumes:
+      - "./config/training-data:/usr/share/tessdata" # Required for extra OCR languages
+      - "./config/extra:/configs"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

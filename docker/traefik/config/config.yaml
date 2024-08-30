@@ -1,0 +1,83 @@
+http:
+  routers:
+    stirling-pdf:
+      rule: { { expandenv "Host(`stirling-pdf.$DOMAIN`)" } }
+      service: "stirling-pdf"
+      middlewares:
+        - "sablier@file"
+    pihole:
+      rule: { { expandenv "Host(`pihole.$DOMAIN`)" } }
+      service: "pihole"
+      middlewares:
+        - "pihole-redirect-regex@file"
+        - "pihole-add-prefix@file"
+    wol:
+      rule: { { expandenv "Host(`wol.$DOMAIN`)" } }
+      service: "wol"
+
+  services:
+    stirling-pdf:
+      loadBalancer:
+        servers:
+          - url: "http://stirling-pdf:8080"
+    pihole:
+      loadBalancer:
+        servers:
+          - url: { { expandenv "http://$PIHOLE_IP" } }
+    wol:
+      loadBalancer:
+        servers:
+          - url: { { expandenv "http://$WOL_IP" } }
+
+  middlewares:
+    pihole-add-prefix:
+      addPrefix:
+        prefix: "/admin"
+    pihole-redirect-regex:
+      redirectRegex:
+        regex: "/admin/$"
+        replacement: "/"
+    sablier:
+      plugin:
+        sablier:
+          group: "default"
+          names: "stirling-pdf"
+          sablierUrl: "http://sablier:10000"
+          sessionDuration: "5m"
+          dynamic:
+            displayName: Stirling PDF
+            refreshFrequency: "5s"
+            showDetails: "true"
+            theme: "ghost"
+
+    default:
+      chain:
+        middlewares:
+          - "default-security-headers@file"
+          - "gzip@file"
+
+    default-security-headers:
+      headers:
+        browserXssFilter: "true" # X-XSS-Protection=1; mode=block
+        contentTypeNosniff: "true" # X-Content-Type-Options=nosniff
+        forceSTSHeader: "true" # Add the Strict-Transport-Security header even when the connection is HTTP
+        frameDeny: "true" # X-Frame-Options=deny
+        referrerPolicy: "strict-origin-when-cross-origin"
+        sslRedirect: "true" # Allow only https requests
+        stsIncludeSubdomains: "true" # Add includeSubdomains to the Strict-Transport-Security header
+        stsPreload: "true" # Add preload flag appended to the Strict-Transport-Security header
+        stsSeconds: "63072000" # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
+
+    # Enables the GZIP compression
+    #   if the response body is larger than 1400 bytes
+    #   if the Accept-Encoding request header contains gzip
+    #   if the response is not already compressed (Content-Encoding is not set)
+    gzip:
+      compress: {}
+
+# Disable TLS version 1.0, 1.1 and 1.2
+tls:
+  options:
+    default:
+      minVersion: "VersionTLS13"
+      sniStrict: "true"
