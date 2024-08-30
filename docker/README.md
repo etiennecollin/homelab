@@ -5,7 +5,7 @@
 When starting the containers with docker compose, use the following command to import the main `main.env` file.
 
 ```bash
-docker compose --env-file ../main.env up --force-recreate
+docker compose --env-file ../secret.env up -d --force-recreate
 ```
 
 ## Install
