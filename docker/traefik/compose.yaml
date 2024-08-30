@@ -15,8 +15,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./config/config.yaml:/config.yaml:ro"
-      - "./config/acme_production.json:/acme_production.json"
-      - "./config/acme_staging.json:/acme_staging.json"
+      - "./config/acme.json:/acme.json"
     environment:
       DOMAIN: ${DOMAIN}
       PUBLIC_EMAIL: ${PUBLIC_EMAIL}

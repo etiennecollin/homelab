@@ -11,9 +11,9 @@ Create the `proxy` network
 docker network create proxy
 ```
 
-Create `./config/acme_production.json` and `./config/acme_staging.json` with permissions `600`
+Create `./config/acme.json` with permissions `600`
 
 ```bash
-touch ./config/acme_production.json ./config/acme_staging.json
-chmod 600 ./config/acme_production.json ./config/acme_staging.json
+touch ./config/acme.json
+chmod 600 ./config/acme.json
 ```

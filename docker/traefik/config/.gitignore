@@ -1,4 +1,4 @@
 # Ignore everything in this directory
-acme_*
+acme.json
 # Except this file
 !.gitignore
