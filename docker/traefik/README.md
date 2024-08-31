@@ -5,10 +5,11 @@ The Clouflare token requires:
 - `Zone.Zone:Read`
 - `Zone.DNS:Edit`
 
-Create the `proxy` network
+Create the `proxy` and `socket-proxy` networks
 
 ```bash
 docker network create proxy
+docker network create socket-proxy
 ```
 
 Create `./config/acme.json` with permissions `600`
