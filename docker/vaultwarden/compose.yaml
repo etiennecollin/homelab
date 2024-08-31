@@ -20,6 +20,9 @@ services:
     image: "ttionya/vaultwarden-backup:latest"
     container_name: "vaultwarden-backup"
     restart: "unless-stopped"
+    depends_on:
+      vaultwarden:
+        condition: service_started
     environment:
       RCLONE_REMOTE_NAME: "VaultwardenBackup"
       RCLONE_REMOTE_DIR: "/VaultwardenBackup/"
