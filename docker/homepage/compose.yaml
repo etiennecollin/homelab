@@ -11,6 +11,8 @@ services:
     environment:
       HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
       HOMEPAGE_VAR_CITY: ${CITY}
+    env_file:
+      - "./secret.env"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"
