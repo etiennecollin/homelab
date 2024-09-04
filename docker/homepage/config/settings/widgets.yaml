@@ -5,8 +5,9 @@
 - datetime:
     text_size: "xl"
     format:
-      dateStyle: "long"
+      dateStyle: "medium"
       timeStyle: "short"
+      timeZone: "{{HOMEPAGE_VAR_TIMEZONE}}"
       hour12: "false"
 
 - resources:

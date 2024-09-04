@@ -9,8 +9,9 @@ services:
       - "./config/settings:/app/config"
       - "./config/images:/app/public/images"
     environment:
-      HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
       HOMEPAGE_VAR_CITY: ${CITY}
+      HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
+      HOMEPAGE_VAR_TIMEZONE: ${TIMEZONE}
     env_file:
       - "./secret.env"
     labels:
