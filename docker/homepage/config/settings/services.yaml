@@ -1,0 +1,19 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Tools:
+  - Wakesp:
+      icon: "espressif.svg"
+      href: "https://wol.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Wake on LAN"
+      siteMonitor: "https://wol.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - PiHole:
+      icon: "pi-hole.svg"
+      href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Local DNS"
+      siteMonitor: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
+      widget:
+        type: pihole
+        url: "https://pihole-api.{{HOMEPAGE_VAR_DOMAIN}}/"
+        version: 5 # required if running v6 or higher, defaults to 5

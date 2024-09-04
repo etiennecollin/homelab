@@ -1,0 +1,18 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Developer:
+  - Github:
+    - icon: "si-github"
+      href: "https://github.com/etiennecollin"
+
+- Social:
+  - Reddit:
+    - icon: "si-reddit"
+      href: "https://reddit.com/"
+
+- Entertainment:
+  - YouTube:
+    - icon: "si-youtube"
+      href: "https://youtube.com/"

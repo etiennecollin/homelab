@@ -1,13 +1,16 @@
 ---
 services:
   homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
+    image: "ghcr.io/gethomepage/homepage:latest"
+    container_name: "homepage"
+    restart: "unless-stopped"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "./config:/app/config"
+      - "./config/settings:/app/config"
+      - "./config/images:/app/public/images"
     environment:
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
+      HOMEPAGE_VAR_CITY: ${CITY}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"
@@ -15,3 +18,9 @@ services:
     networks:
       - "proxy"
       - "socket-proxy"
+
+networks:
+  proxy:
+    external: "true"
+  socket-proxy:
+    external: "true"

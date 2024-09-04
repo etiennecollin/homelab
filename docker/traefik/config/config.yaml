@@ -11,6 +11,9 @@ http:
       middlewares:
         - "pihole-redirect-regex@file"
         - "pihole-add-prefix@file"
+    pihole-api:
+      rule: '{{ expandenv "Host(`pihole-api.$DOMAIN`)" }}'
+      service: "pihole-api"
     wol:
       rule: '{{ expandenv "Host(`wol.$DOMAIN`)" }}'
       service: "wol"
@@ -21,6 +24,10 @@ http:
         servers:
           - url: "http://stirling-pdf:8080"
     pihole:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "http://$PIHOLE_IP" }}'
+    pihole-api:
       loadBalancer:
         servers:
           - url: '{{ expandenv "http://$PIHOLE_IP" }}'

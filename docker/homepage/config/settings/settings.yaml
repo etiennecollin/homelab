@@ -1,0 +1,49 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: "Homepage"
+favicon: "/images/favicon.ico"
+background:
+  image: "/images/ancient_bristlecone_pine_forest.jpg"
+  blur: "md"
+  saturate: "100"
+  brightness: "75"
+  opacity: "100"
+
+color: "neutral"
+theme: "dark"
+iconStyle: "theme"
+headerStyle: "boxed"
+statusStyle: "dot"
+useEqualHeights: "true"
+hideVersion: "true"
+language: "en-CA"
+
+layout:
+  Entertainment:
+    tab: "Bookmarks"
+    style: "column"
+    fiveColumns: "true"
+  Social:
+    tab: "Bookmarks"
+    style: "column"
+    fiveColumns: "true"
+  Developer:
+    tab: "Bookmarks"
+    style: "column"
+    fiveColumns: "true"
+
+  Tools:
+    header: "false"
+    tab: "Services"
+    style: "row"
+    columns: "4"
+
+quicklaunch:
+  searchDescriptions: "true"
+  hideInternetSearch: "true"
+  showSearchSuggestions: "false"
+  hideVisitURL: "true"
+  provider: "duckduckgo"
+
