@@ -1,0 +1,17 @@
+---
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/config"
+    environment:
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+    networks:
+      - "proxy"
+      - "socket-proxy"
