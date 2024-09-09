@@ -27,7 +27,7 @@ services:
     restart: "unless-stopped"
     depends_on:
       vaultwarden:
-        condition: service_started
+        condition: "service_started"
     environment:
       RCLONE_REMOTE_NAME: "VaultwardenBackup"
       RCLONE_REMOTE_DIR: "/VaultwardenBackup/"

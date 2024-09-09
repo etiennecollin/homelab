@@ -27,8 +27,8 @@ services:
       - "homepage.href=https://stirling-pdf.${DOMAIN}/"
       - "homepage.description=PDF tools"
     networks:
-      - proxy
+      - "proxy"
 
 networks:
   proxy:
-    external: true
+    external: "true"
