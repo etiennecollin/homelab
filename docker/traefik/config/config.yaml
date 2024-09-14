@@ -14,9 +14,9 @@ http:
     pihole-api:
       rule: '{{ expandenv "Host(`pihole-api.$DOMAIN`)" }}'
       service: "pihole-api"
-    wol:
-      rule: '{{ expandenv "Host(`wol.$DOMAIN`)" }}'
-      service: "wol"
+    wakesp:
+      rule: '{{ expandenv "Host(`wakesp.$DOMAIN`)" }}'
+      service: "wakesp"
 
   services:
     stirling-pdf:
@@ -31,10 +31,10 @@ http:
       loadBalancer:
         servers:
           - url: '{{ expandenv "http://$PIHOLE_IP" }}'
-    wol:
+    wakesp:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$WOL_IP" }}'
+          - url: '{{ expandenv "http://$WAKESP_IP" }}'
 
   middlewares:
     pihole-add-prefix:

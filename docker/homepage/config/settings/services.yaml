@@ -5,9 +5,9 @@
 - Tools:
   - Wakesp:
       icon: "espressif.svg"
-      href: "https://wol.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "Wake on LAN"
-      siteMonitor: "https://wol.{{HOMEPAGE_VAR_DOMAIN}}/"
+      href: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Wakesp"
+      siteMonitor: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
   - PiHole:
       icon: "pi-hole.svg"
       href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
