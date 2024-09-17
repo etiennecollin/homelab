@@ -27,7 +27,9 @@
       icon: "stirling-pdf.svg"
       href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "PDF tools"
+      siteMonitor: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}/"
   - ntfy:
       icon: "ntfy.svg"
       href: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Notifications service"
+      siteMonitor: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
