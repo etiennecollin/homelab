@@ -20,12 +20,6 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config/training-data:/usr/share/tessdata" # Required for extra OCR languages
       - "./config/extra:/configs"
-    labels:
-      - "homepage.group=Tools"
-      - "homepage.name=Stirling PDF"
-      - "homepage.icon=stirling-pdf.svg"
-      - "homepage.href=https://stirling-pdf.${DOMAIN}/"
-      - "homepage.description=PDF tools"
     networks:
       - "proxy"
 
