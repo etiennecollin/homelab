@@ -18,3 +18,8 @@
         url: "https://pihole-api.{{HOMEPAGE_VAR_DOMAIN}}/"
         version: 5 # required if running v6 or higher, defaults to 5
         key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
+  - Vaultwarden:
+      icon: "vaultwarden.svg"
+      href: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Password manager"
+      siteMonitor: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"

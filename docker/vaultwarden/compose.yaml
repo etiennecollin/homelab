@@ -13,11 +13,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.${DOMAIN}`)"
       - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
-      - "homepage.group=Tools"
-      - "homepage.name=Vaultwarden"
-      - "homepage.icon=vaultwarden.svg"
-      - "homepage.href=https://vaultwarden.${DOMAIN}/"
-      - "homepage.description=Password manager"
     networks:
       - "proxy"
 
