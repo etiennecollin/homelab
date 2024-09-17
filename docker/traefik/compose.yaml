@@ -30,28 +30,6 @@ services:
       - "proxy"
       - "socket-proxy"
 
-  sablier:
-    image: "acouvreur/sablier:1.7.0"
-    container_name: "sablier"
-    restart: "unless-stopped"
-    depends_on:
-      traefik:
-        condition: "service_started"
-    command:
-      - "start"
-      - "--provider.name=docker"
-    expose:
-      - "10000"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-    environment:
-      DOCKER_HOST: "tcp://socket-proxy:2375"
-    labels:
-      - "traefik.enable=true"
-    networks:
-      - "proxy"
-      - "socket-proxy"
-
   socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: "socket-proxy"
