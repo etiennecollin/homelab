@@ -1,10 +1,5 @@
 http:
   routers:
-    stirling-pdf:
-      rule: '{{ expandenv "Host(`stirling-pdf.$DOMAIN`)" }}'
-      service: "stirling-pdf"
-      middlewares:
-        - "stirling-pdf-sablier@file"
     pihole:
       rule: '{{ expandenv "Host(`pihole.$DOMAIN`)" }}'
       service: "pihole"
@@ -19,10 +14,6 @@ http:
       service: "wakesp"
 
   services:
-    stirling-pdf:
-      loadBalancer:
-        servers:
-          - url: "http://stirling-pdf:8080"
     pihole:
       loadBalancer:
         servers:
@@ -44,19 +35,6 @@ http:
       redirectRegex:
         regex: "/admin/$"
         replacement: "/"
-    stirling-pdf-sablier:
-      plugin:
-        sablier:
-          group: "default"
-          names: "stirling-pdf"
-          sablierUrl: "http://sablier:10000"
-          sessionDuration: "5m"
-          dynamic:
-            displayName: Stirling PDF
-            refreshFrequency: "5s"
-            showDetails: "true"
-            theme: "ghost"
-
     default:
       chain:
         middlewares:

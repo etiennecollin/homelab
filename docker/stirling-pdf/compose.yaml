@@ -20,6 +20,10 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config/training-data:/usr/share/tessdata" # Required for extra OCR languages
       - "./config/extra:/configs"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.stirling-pdf.rule=Host(`stirling-pdf.${DOMAIN}`)"
+      - "traefik.http.services.stirling-pdf.loadbalancer.server.port=8080"
     networks:
       - "proxy"
 
