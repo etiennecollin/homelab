@@ -5,11 +5,11 @@ services:
     container_name: "stirling-pdf"
     restart: "unless-stopped"
     environment:
-      DOCKER_ENABLE_SECURITY: "true"
+      DOCKER_ENABLE_SECURITY: "false"
+      SECURITY_ENABLELOGIN: "false"
+      SECURITY_CSRFDISABLED: "false"
       INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
       LANGS: "en_GB,en_US,fr_FR"
-      SECURITY_ENABLELOGIN: "true"
-      SECURITY_CSRFDISABLED: "false"
       SYSTEM_SHOWUPDATE: "true"
       SYSTEM_SHOWUPDATEONLYADMIN: "true"
       METRICS_ENABLE: "false"
@@ -26,6 +26,11 @@ services:
       - "traefik.http.services.stirling-pdf.loadbalancer.server.port=8080"
     networks:
       - "proxy"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:8080/api/v1/info/status | grep -q 'UP' && curl -fL http://127.0.0.1:8080/ | grep -qv 'Please sign in'"]
+      interval: 5s
+      timeout: 10s
+      retries: 16
 
 networks:
   proxy:
