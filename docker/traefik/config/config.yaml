@@ -12,6 +12,15 @@ http:
     wakesp:
       rule: '{{ expandenv "Host(`wakesp.$DOMAIN`)" }}'
       service: "wakesp"
+    ipmi:
+      rule: '{{ expandenv "Host(`ipmi.$DOMAIN`)" }}'
+      service: "ipmi"
+    pve:
+      rule: '{{ expandenv "Host(`pve.$DOMAIN`)" }}'
+      service: "pve"
+    unifi:
+      rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
+      service: "unifi"
 
   services:
     pihole:
@@ -26,6 +35,18 @@ http:
       loadBalancer:
         servers:
           - url: '{{ expandenv "http://$WAKESP_IP" }}'
+    ipmi:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "http://$IPMI_IP" }}'
+    pve:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "http://$PVE_IP" }}'
+    unifi:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "http://$UNIFI_IP" }}'
 
   middlewares:
     pihole-add-prefix:
