@@ -21,6 +21,9 @@ http:
     unifi:
       rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
       service: "unifi"
+    homeassistant:
+      rule: '{{ expandenv "Host(`homeassistant.$DOMAIN`)" }}'
+      service: "homeassistant"
 
   services:
     pihole:
@@ -47,6 +50,10 @@ http:
       loadBalancer:
         servers:
           - url: '{{ expandenv "http://$UNIFI_IP" }}'
+    homeassistant:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "http://$HOMEASSISTANT_IP" }}'
 
   middlewares:
     pihole-add-prefix:
