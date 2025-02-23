@@ -1,0 +1,26 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      # DNS Ports
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Web interface HTTP/HTTPS Port
+      - "8080:80/tcp"
+      - "4443:443/tcp"
+      # Uncomment the below if using Pi-hole as your DHCP Server
+      #- "67:67/udp"
+    environment:
+      TZ: ${TIMEZONE}
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to "all"
+      FTLCONF_dns_listeningMode: "all"
+    env_file:
+      - "./secret.env"
+    volumes:
+      - "./config/etc-pihole:/etc/pihole"
+      - "./config/etc-dnsmasq.d:/etc/dnsmasq.d"
+    # cap_add:
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      # - NET_ADMIN
+    restart: unless-stopped
