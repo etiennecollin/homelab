@@ -1,7 +1,7 @@
 ---
 services:
   traefik:
-    image: "traefik:v3.3.3"
+    image: "traefik:v3.3.4"
     container_name: "traefik"
     restart: "unless-stopped"
     depends_on:
@@ -11,9 +11,8 @@ services:
       - "no-new-privileges:true"
     ports:
       - "80:80"
-      - "443:443"
-      # - "443:443/tcp" # Uncomment if you want HTTP3
-      # - "443:443/udp" # Uncomment if you want HTTP3
+      - "443:443/tcp"
+      - "443:443/udp"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config/config.yaml:/config.yaml:ro"
