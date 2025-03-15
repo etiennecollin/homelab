@@ -15,6 +15,7 @@ services:
       TZ: ${TIMEZONE}
       # If using Docker's default `bridge` network setting the dns listening mode should be set to "all"
       FTLCONF_dns_listeningMode: "all"
+      FTLCONF_dns_queryLogging: "false"
     env_file:
       - "./secret.env"
     volumes:
