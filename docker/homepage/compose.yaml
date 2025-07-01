@@ -12,6 +12,7 @@ services:
       HOMEPAGE_VAR_CITY: ${CITY}
       HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
       HOMEPAGE_VAR_TIMEZONE: ${TIMEZONE}
+      HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN}
     env_file:
       - "./secret.env"
     labels:
