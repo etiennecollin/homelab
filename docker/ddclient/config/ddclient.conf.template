@@ -1,0 +1,23 @@
+syslog=no
+verbose=no
+
+ssl=yes
+daemon=300 # Check every 5min (300s)
+
+## For ddclient == v3.10
+# use=web
+# web=ipify-ipv4
+
+## For ddclient > v3.10
+usev4=webv4
+webv4=ipify-ipv4
+
+## Cloudflare
+# The token must have the permissions: "Zone - DNS - Edit" and "Zone - Zone - Read"
+# The Zone resources must be "Include - All zones"
+protocol=cloudflare, \
+zone=example.com, \
+ttl=1, \
+login=token, \
+password='your_api_token' \
+subdomain.example.com
