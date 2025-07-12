@@ -13,11 +13,6 @@
       href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Local DNS"
       siteMonitor: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
-      widget:
-        type: pihole
-        url: "https://pihole-api.{{HOMEPAGE_VAR_DOMAIN}}/"
-        version: 5 # required if running v6 or higher, defaults to 5
-        key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
   - Vaultwarden:
       icon: "vaultwarden.svg"
       href: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
