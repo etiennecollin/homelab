@@ -3,6 +3,7 @@ services:
   ddclient:
     image: "lscr.io/linuxserver/ddclient:4.0.0"
     container_name: "ddclient"
+    network_mode: "bridge"
     environment:
       PUID: "${PUID}"
       PGID: "${PGID}"
