@@ -25,6 +25,10 @@ services:
       - "./traefik.env"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik-dashboard.service=dashboard@internal"
+      - "traefik.http.routers.traefik-api.rule=Host(`traefik.${DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik-api.service=api@internal"
     networks:
       - "proxy"
       - "socket-proxy"
