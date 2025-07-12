@@ -1,13 +1,5 @@
 http:
   routers:
-    pihole:
-      rule: '{{ expandenv "Host(`pihole.$DOMAIN`)" }}'
-      service: "pihole"
-      middlewares:
-        - "pihole-redirect-regex@file"
-    pihole-api:
-      rule: '{{ expandenv "Host(`pihole-api.$DOMAIN`)" }}'
-      service: "pihole-api"
     wakesp:
       rule: '{{ expandenv "Host(`wakesp.$DOMAIN`)" }}'
       service: "wakesp"
@@ -25,14 +17,6 @@ http:
       service: "homeassistant"
 
   services:
-    pihole:
-      loadBalancer:
-        servers:
-          - url: '{{ expandenv "http://$PIHOLE_IP" }}'
-    pihole-api:
-      loadBalancer:
-        servers:
-          - url: '{{ expandenv "http://$PIHOLE_IP" }}'
     wakesp:
       loadBalancer:
         servers:
@@ -55,10 +39,6 @@ http:
           - url: '{{ expandenv "http://$HOMEASSISTANT_IP" }}'
 
   middlewares:
-    pihole-redirect-regex:
-      redirectRegex:
-        regex: '{{ expandenv "$DOMAIN/" }}$'
-        replacement: '{{ expandenv "$DOMAIN/admin" }}'
     default:
       chain:
         middlewares:

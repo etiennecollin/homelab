@@ -6,9 +6,6 @@ services:
       # DNS Ports
       - "53:53/tcp"
       - "53:53/udp"
-      # Web interface HTTP/HTTPS Port
-      - "8080:80/tcp"
-      - "4443:443/tcp"
       # Uncomment the below if using Pi-hole as your DHCP Server
       #- "67:67/udp"
     environment:
@@ -27,3 +24,15 @@ services:
       - "SYS_NICE" # To upgrade process priority
       # - NET_ADMIN # Required to use Pi-hole as DHCP server
     restart: "unless-stopped"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN}`)"
+      # - "traefik.http.routers.pihole.middlewares=pihole-admin"
+      # - "traefik.http.middlewares.pihole-admin.addprefix.prefix=/admin"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+    networks:
+      - "proxy"
+
+networks:
+  proxy:
+    external: "true"
