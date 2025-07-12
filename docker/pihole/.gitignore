@@ -1,4 +1,1 @@
-# Ignore everything in this directory
 config
-# Except this file
-!.gitignore

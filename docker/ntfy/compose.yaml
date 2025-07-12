@@ -1,13 +1,13 @@
 ---
 services:
   ntfy:
-    image: "binwiederhier/ntfy"
+    image: "binwiederhier/ntfy:v2.13.0"
     container_name: "ntfy"
     restart: "unless-stopped"
     command:
       - "serve"
     environment:
-      TZ: ${TIMEZONE}
+      TZ: "${TIMEZONE}"
       NTFY_BASE_URL: "https://ntfy.${DOMAIN}"
       NTFY_ATTACHMENT_CACHE_DIR: "/var/lib/ntfy/attachments"
       NTFY_ATTACHMENT_FILE_SIZE_LIMIT: "25M"

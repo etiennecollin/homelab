@@ -1,7 +1,7 @@
 ---
 services:
   homepage:
-    image: "ghcr.io/gethomepage/homepage:latest"
+    image: "ghcr.io/gethomepage/homepage:v1.3.2"
     container_name: "homepage"
     restart: "unless-stopped"
     volumes:
@@ -9,10 +9,10 @@ services:
       - "./config/settings:/app/config"
       - "./config/images:/app/public/images"
     environment:
-      HOMEPAGE_VAR_CITY: ${CITY}
-      HOMEPAGE_VAR_DOMAIN: ${DOMAIN}
-      HOMEPAGE_VAR_TIMEZONE: ${TIMEZONE}
-      HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN}
+      HOMEPAGE_VAR_CITY: "${CITY}"
+      HOMEPAGE_VAR_DOMAIN: "${DOMAIN}"
+      HOMEPAGE_VAR_TIMEZONE: "${TIMEZONE}"
+      HOMEPAGE_ALLOWED_HOSTS: "${DOMAIN}"
     env_file:
       - "./secret.env"
     labels:
