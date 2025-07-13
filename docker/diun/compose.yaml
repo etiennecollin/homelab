@@ -3,23 +3,31 @@ services:
   diun:
     image: "crazymax/diun:4.29.0"
     container_name: "diun"
+    hostname: "docker-diun"
     restart: "unless-stopped"
     command: "serve"
     volumes:
       - "./config:/data"
+    env_file:
+      - "./secret.env"
     environment:
       TZ: "${TIMEZONE}"
-      DIUN_WATCH_WORKERS: "20"
-      DIUN_WATCH_SCHEDULE: "0 */6 * * *"
-      DIUN_WATCH_JITTER: "30s"
+      DIUN_WATCH_WORKERS: "10"
+      DIUN_WATCH_SCHEDULE: "0 2 */7 * *" # At 02:00 AM, every 7 days
+      DIUN_WATCH_JITTER: "120s"
       DIUN_PROVIDERS_DOCKER: "true"
       DIUN_PROVIDERS_DOCKER_ENDPOINT: "tcp://socket-proxy:2375"
       DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
+      ########
+      # We only want to get updates to the `latest` tag
+      DIUN_DEFAULTS_WATCHREPO: "true"
+      DIUN_DEFAULTS_MAXTAGS: "3"
+      DIUN_DEFAULTS_SORTTAGS: "semver"
+      DIUN_DEFAULTS_NOTIFYON: "new,update"
+      DIUN_DEFAULTS_INCLUDETAGS: "^(?:v?\\d+\\.\\d+(?:\\.\\d+)?|latest)$$"
+      ########
       DIUN_NOTIF_DISCORD_MENTIONS: "@here"
-    env_file:
-      - "./secret.env"
-    labels:
-      - "diun.enable=true"
+      DIUN_NOTIF_DISCORD_TEMPLATEBODY: "Docker tag {{ .Entry.Image }} which you subscribed to through {{ .Entry.Provider }} provider has been released."
     networks:
       - "socket-proxy"
 
