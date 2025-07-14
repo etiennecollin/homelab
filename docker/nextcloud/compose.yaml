@@ -1,0 +1,54 @@
+---
+services:
+  nextcloud:
+    image: "lscr.io/linuxserver/nextcloud:31.0.7"
+    container_name: "nextcloud"
+    depends_on:
+      mariadb:
+        condition: "service_started"
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TIMEZONE}"
+    networks:
+      - "proxy"
+      - "nextcloud"
+    volumes:
+      - "./config:/config"
+      - "./data:/data"
+    restart: "unless-stopped"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.${DOMAIN}`)"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-dav-redirect@docker,nextcloud-header@docker"
+      - "traefik.http.middlewares.nextcloud-header.headers.customFrameOptionsValue=SAMEORIGIN"
+      - "traefik.http.middlewares.nextcloud-header.headers.customResponseHeaders.Strict-Transport-Security=15552000"
+      - "traefik.http.middlewares.nextcloud-dav-redirect.redirectregex.permanent=true"
+      - "traefik.http.middlewares.nextcloud-dav-redirect.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nextcloud-dav-redirect.redirectregex.replacement=https://$${1}/remote.php/dav"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+      - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+
+  # Accessible in the nextcloud network at: mariadb:3306
+  mariadb:
+    image: "lscr.io/linuxserver/mariadb:11.4.5"
+    container_name: "mariadb"
+    env_file:
+      - "./secret.env"
+    environment:
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TIMEZONE}"
+      MYSQL_DATABASE: "nextcloud"
+      MYSQL_USER: "nextcloud"
+    networks:
+      - "nextcloud"
+    volumes:
+      - "./db-config:/config"
+    restart: "unless-stopped"
+
+networks:
+  proxy:
+    external: "true"
+  nextcloud:
+    name: "nextcloud"
