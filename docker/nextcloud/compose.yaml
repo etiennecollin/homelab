@@ -4,7 +4,7 @@ services:
     image: "lscr.io/linuxserver/nextcloud:31.0.7"
     container_name: "nextcloud"
     depends_on:
-      mariadb:
+      nextcloud-mariadb:
         condition: "service_started"
     environment:
       PGID: "${PGID}"
@@ -29,10 +29,10 @@ services:
       - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
       - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
 
-  # Accessible in the nextcloud network at: mariadb:3306
-  mariadb:
+  # Accessible in the nextcloud network at: nextcloud-mariadb:3306
+  nextcloud-mariadb:
     image: "lscr.io/linuxserver/mariadb:11.4.5"
-    container_name: "mariadb"
+    container_name: "nextcloud-mariadb"
     env_file:
       - "./secret.env"
     environment:

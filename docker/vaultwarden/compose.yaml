@@ -16,7 +16,7 @@ services:
     networks:
       - "proxy"
 
-  backup:
+  vaultwarden-backup:
     image: "ttionya/vaultwarden-backup:1.24.3"
     container_name: "vaultwarden-backup"
     restart: "unless-stopped"
