@@ -24,7 +24,7 @@ http:
     ipmi:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$IPMI_IP" }}'
+          - url: '{{ expandenv "https://$IPMI_IP" }}'
     pve:
       loadBalancer:
         servers:
@@ -32,7 +32,7 @@ http:
     unifi:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$UNIFI_IP" }}'
+          - url: '{{ expandenv "https://$UNIFI_IP" }}'
     homeassistant:
       loadBalancer:
         servers:
