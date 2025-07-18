@@ -13,7 +13,7 @@ services:
     environment:
       TZ: "${TIMEZONE}"
       DIUN_WATCH_WORKERS: "10"
-      DIUN_WATCH_SCHEDULE: "0 2 */7 * *" # At 02:00 AM, every 7 days
+      DIUN_WATCH_SCHEDULE: "0 2 */5 * *" # At 02:00 AM, every 5 days
       DIUN_WATCH_JITTER: "120s"
       DIUN_PROVIDERS_DOCKER: "true"
       DIUN_PROVIDERS_DOCKER_ENDPOINT: "tcp://socket-proxy:2375"
