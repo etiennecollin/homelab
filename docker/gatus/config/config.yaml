@@ -1,0 +1,66 @@
+alerting:
+  discord:
+    webhook-url: "${DISCORD_WEBHOOK_URL}"
+  default-alert:
+      description: "Health Check Failed"
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 2
+
+endpoints:
+  - name: "homepage"
+    url: "https://${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "nextcloud"
+    url: "https://nextcloud.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "ntfy"
+    url: "https://ntfy.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "pihole"
+    url: "https://pihole.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "stirling-pdf"
+    url: "https://stirling-pdf.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "traefik"
+    url: "https://traefik.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
+  - name: "vaultwarden"
+    url: "https://vaultwarden.${DOMAIN}"
+    interval: "5m"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+

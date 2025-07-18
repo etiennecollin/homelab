@@ -1,0 +1,24 @@
+---
+services:
+  gatus:
+    container_name: "gatus"
+    image: "twinproduction/gatus:v5.20.0"
+    restart: "unless-stopped"
+    env_file:
+      - "./secret.env"
+    environment:
+      DOMAIN: "${DOMAIN}"
+    volumes:
+      - "./config:/config"
+    dns:
+      - "${MAIN_DNS}"
+    networks:
+      - "proxy"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gatus.rule=Host(`gatus.${DOMAIN}`)"
+      - "traefik.http.services.gatus.loadbalancer.server.port=8080"
+
+networks:
+  proxy:
+    external: "true"
