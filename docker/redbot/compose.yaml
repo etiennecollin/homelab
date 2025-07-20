@@ -1,0 +1,16 @@
+---
+services:
+  redbot:
+    container_name: "redbot"
+    image: "phasecorex/red-discordbot:core"
+    restart: "unless-stopped"
+    volumes:
+      - "./data:/data"
+    env_file:
+      - "./secret.env"
+    environment:
+      PREFIX: "!"
+      PGID: "${PGID}"
+      PUID: "${PUID}"
+      TZ: "${TIMEZONE}"
+    network_mode: "bridge"
