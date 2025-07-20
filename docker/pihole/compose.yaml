@@ -1,25 +1,33 @@
 services:
   pihole:
-    image: "pihole/pihole:2025.06.2"
+    image: "pihole/pihole:2025.07.1"
     container_name: "pihole"
+    hostname: "pihole"
     ports:
       # DNS Ports
       - "53:53/tcp"
       - "53:53/udp"
       # Uncomment the below if using Pi-hole as your DHCP Server
       #- "67:67/udp"
+    env_file:
+      - "./secret.env"
     environment:
-      TZ: "${TIMEZONE}"
       FTLCONF_dns_dnssec: "true"
       FTLCONF_dns_domain: "${DOMAIN}"
       FTLCONF_dns_listeningMode: "all" # Since we use the Docker's default `bridge` network
       FTLCONF_dns_queryLogging: "false"
       FTLCONF_dns_upstreams: "9.9.9.11;149.112.112.11" # Quad9 Filtered, DNSSEC, ECS enabled
       FTLCONF_misc_privacylevel: "3"
-    env_file:
-      - "./secret.env"
+      PIHOLE_GID: "${PGID}"
+      PIHOLE_UID: "${PUID}"
+      TZ: "${TIMEZONE}"
+    dns:
+        - "127.0.0.1"
+        - "9.9.9.11"
+        - "149.112.112.11"
     volumes:
       - "./config/etc-pihole:/etc/pihole"
+      - "./config/adlists.list:/etc/pihole/adlists.list:ro"
     cap_add:
       - "SYS_NICE" # To upgrade process priority
       # - NET_ADMIN # Required to use Pi-hole as DHCP server
