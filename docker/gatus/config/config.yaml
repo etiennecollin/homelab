@@ -10,7 +10,7 @@ alerting:
 endpoints:
   - name: "homepage"
     url: "https://${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -18,7 +18,7 @@ endpoints:
 
   - name: "nextcloud"
     url: "https://nextcloud.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -26,7 +26,7 @@ endpoints:
 
   - name: "ntfy"
     url: "https://ntfy.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -34,7 +34,7 @@ endpoints:
 
   - name: "pihole"
     url: "https://pihole.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -42,7 +42,7 @@ endpoints:
 
   - name: "stirling-pdf"
     url: "https://stirling-pdf.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -50,7 +50,7 @@ endpoints:
 
   - name: "traefik"
     url: "https://traefik.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -58,7 +58,7 @@ endpoints:
 
   - name: "vaultwarden"
     url: "https://vaultwarden.${DOMAIN}"
-    interval: "5m"
+    interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:

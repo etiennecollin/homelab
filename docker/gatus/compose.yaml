@@ -8,6 +8,7 @@ services:
       - "./secret.env"
     environment:
       DOMAIN: "${DOMAIN}"
+      INTERVAL: "2m"
     volumes:
       - "./config:/config"
     dns:
