@@ -1,0 +1,93 @@
+---
+services:
+  paperless:
+    image: "ghcr.io/paperless-ngx/paperless-ngx:2.17"
+    container_name: "paperless"
+    restart: "unless-stopped"
+    depends_on:
+      paperless-redis:
+        condition: "service_started"
+      paperless-db:
+        condition: "service_started"
+      paperless-gotenberg:
+        condition: "service_started"
+      paperless-tika:
+        condition: "service_started"
+    volumes:
+      - "./config/consume:/usr/src/paperless/consume"
+      - "./config/data:/usr/src/paperless/data"
+      - "./config/export:/usr/src/paperless/export"
+      - "./config/media:/usr/src/paperless/media"
+    env_file:
+      - "./secret.env"
+    environment:
+      PAPERLESS_DBENGINE: "postgresql"
+      PAPERLESS_DBHOST: "paperless-db"
+      PAPERLESS_DBPORT: "5432"
+      PAPERLESS_DBNAME: "paperless"
+      PAPERLESS_DBUSER: "paperless"
+      PAPERLESS_OCR_LANGUAGE: "eng+fra"
+      PAPERLESS_REDIS: "redis://paperless-redis:6379"
+      PAPERLESS_TIKA_ENABLED: "true"
+      PAPERLESS_TIKA_ENDPOINT: "http://paperless-tika:9998"
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: "http://paperless-gotenberg:3000"
+      PAPERLESS_TIME_ZONE: "${TIMEZONE}"
+      PAPERLESS_URL: "https://paperless.${DOMAIN}"
+      USERMAP_GID: "${PGID}"
+      USERMAP_UID: "${PUID}"
+    networks:
+      - "proxy"
+      - "paperless"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperless.rule=Host(`paperless.${DOMAIN}`)"
+      - "traefik.http.services.paperless.loadbalancer.server.port=8000"
+
+  paperless-redis:
+    image: "docker.io/library/redis:8.0.3"
+    container_name: "paperless-redis"
+    restart: "unless-stopped"
+    volumes:
+      - "./config/redisdata:/data"
+    networks:
+      - "paperless"
+
+  paperless-db:
+    image: "docker.io/library/postgres:17.5"
+    container_name: "paperless-db"
+    restart: "unless-stopped"
+    volumes:
+      - "./config/pgdata:/var/lib/postgresql/data"
+    env_file:
+      - "./secret.env"
+    environment:
+      POSTGRES_DB: "paperless"
+      POSTGRES_USER: "paperless"
+    networks:
+      - "paperless"
+
+  paperless-gotenberg:
+    image: "docker.io/gotenberg/gotenberg:8.20"
+    container_name: "paperless-gotenberg"
+    restart: "unless-stopped"
+    # The gotenberg chromium route is used to convert .eml files. We do not
+    # want to allow external content like tracking pixels or even javascript.
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+    networks:
+      - "paperless"
+
+  paperless-tika:
+    image: "docker.io/apache/tika:3.2.1.0"
+    container_name: "paperless-tika"
+    restart: "unless-stopped"
+    networks:
+      - "paperless"
+
+networks:
+  proxy:
+    external: "true"
+  paperless:
+    name: "paperless"

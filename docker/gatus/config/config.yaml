@@ -64,3 +64,11 @@ endpoints:
     alerts:
       - type: "discord"
 
+  - name: "paperless"
+    url: "https://paperless.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+
