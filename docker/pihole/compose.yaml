@@ -14,6 +14,7 @@ services:
     environment:
       FTLCONF_dns_dnssec: "true"
       FTLCONF_dns_domain: "${DOMAIN}"
+      FTLCONF_dns_domainNeeded: "true"
       FTLCONF_dns_listeningMode: "all" # Since we use the Docker's default `bridge` network
       FTLCONF_dns_queryLogging: "false"
       FTLCONF_dns_upstreams: "9.9.9.11;149.112.112.11" # Quad9 Filtered, DNSSEC, ECS enabled
