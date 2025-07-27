@@ -22,7 +22,7 @@ class Action(Enum):
 
     pull = ["pull"]
     up = ["up", "-d", "--force-recreate"]
-    down = ["down"]
+    down = ["down", "--remove-orphans"]
 
     @property
     def command(self) -> list[str]:
