@@ -12,6 +12,8 @@ http:
     unifi:
       rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
       service: "unifi"
+      middlewares:
+        - "unifi-cors"
     homeassistant:
       rule: '{{ expandenv "Host(`homeassistant.$DOMAIN`)" }}'
       service: "homeassistant"
@@ -39,6 +41,17 @@ http:
           - url: '{{ expandenv "http://$HOMEASSISTANT_IP" }}'
 
   middlewares:
+    unifi-cors:
+      headers:
+        accessControlAllowMethods:
+          - "DELETE"
+          - "GET"
+          - "POST"
+        accessControlAllowHeaders:
+          - "Content-Type"
+          - "X-API-Key"
+        accessControlAllowOriginList: "*"
+
     default:
       chain:
         middlewares:
