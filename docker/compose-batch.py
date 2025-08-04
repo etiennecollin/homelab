@@ -20,25 +20,34 @@ class Action(Enum):
     Each entry corresponds to a docker-compose subcommand.
     """
 
-    pull = ["pull"]
-    up = ["up", "-d", "--force-recreate"]
-    down = ["down", "--remove-orphans"]
+    pull = {"flag": "p", "cmd": ["pull"]}
+    up = {"flag": "u", "cmd": ["up", "-d", "--force-recreate"]}
+    down = {"flag": "d", "cmd": ["down", "--remove-orphans"]}
+    build = {"flag": "b", "cmd": ["build", "--pull"]}
+    build_clean = {"flag": "B", "cmd": ["build", "--pull", "--no-cache"]}
 
     @property
     def command(self) -> list[str]:
         """Return the docker-compose subcommand arguments for this action."""
-        return ["docker", "compose", "--env-file", "../secret.env", *self.value]
+        return ["docker", "compose", "--env-file", "../secret.env", *self.value["cmd"]]
 
     @property
     def command_str(self) -> str:
         """Return the command as a string for display purposes."""
         return " ".join(self.command)
 
+    @property
+    def flags(self) -> list[str]:
+        """Return the flags corresponding to this action."""
+        short = self.value["flag"]
+        long = self.name.lower().replace("_", "-")
+        return [f"-{short}", f"--{long}"]
+
     def __str__(self):
-        return self.name
+        return self.name.replace("_", "-")
 
     def __repr__(self):
-        return self.name
+        return self.name.replace("_", "-")
 
 
 # ==============================================================================
@@ -103,7 +112,9 @@ def setup_parser() -> argparse.Namespace:
     parser.add_argument("-a", "--all", action="store_true", help="target all available projects")
     for action in Action:
         parser.add_argument(
-            f"-{action.name[0]}", f"--{action.name}", action="store_true", help=f"docker compose {action.name}"
+            *action.flags,
+            action="store_true",
+            help=f"docker compose {action}",
         )
     parser.add_argument("projects", nargs="*", help="project names")
     return parser.parse_args()
