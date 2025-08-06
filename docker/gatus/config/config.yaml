@@ -72,3 +72,11 @@ endpoints:
     alerts:
       - type: "discord"
 
+  - name: "unifi-voucher-manager"
+    url: "https://vouchers.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
+

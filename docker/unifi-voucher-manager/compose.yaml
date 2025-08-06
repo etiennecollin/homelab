@@ -1,0 +1,23 @@
+---
+services:
+  unifi-voucher-manager:
+    container_name: "unifi-voucher-manager"
+    image: "etiennecollin/unifi-voucher-manager:1.2.1"
+    restart: "unless-stopped"
+    env_file:
+      - "./secret.env"
+    environment:
+      TIMEZONE: "${TIMEZONE}"
+    networks:
+      - "proxy"
+    dns:
+      - "${MAIN_DNS}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vouchers.rule=Host(`vouchers.${DOMAIN}`)"
+      - "traefik.http.services.vouchers.loadbalancer.server.port=3000"
+
+networks:
+  proxy:
+    external: "true"
+
