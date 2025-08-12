@@ -1,0 +1,31 @@
+services:
+  copyparty:
+    image: "copyparty/iv:latest"
+    container_name: "copyparty"
+    hostname: "copyparty"
+    restart: "unless-stopped"
+    stop_grace_period: "15s" # Thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
+    user: "${PUID}:${PGID}"
+    environment:
+      LD_PRELOAD: "/usr/lib/libmimalloc-secure.so.2" # Enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
+      PYTHONUNBUFFERED: "1" # Ensures log-messages are not delayed (but can reduce speed a tiny bit)
+    volumes:
+      - "./config:/cfg:z"
+      - "./share:/w:z"
+    healthcheck:
+      # Hide it from logs with "/._" so it matches the default --lf-url filter
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: "1m"
+      timeout: "2s"
+      retries: "5"
+      start_period: "15s"
+    networks:
+      - "proxy"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.copyparty.rule=Host(`copyparty.${DOMAIN}`)"
+      - "traefik.http.services.copyparty.loadbalancer.server.port=3923"
+
+networks:
+  proxy:
+    external: "true"
