@@ -80,3 +80,10 @@ endpoints:
     alerts:
       - type: "discord"
 
+  - name: "copyparty"
+    url: "https://copyparty.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "discord"
