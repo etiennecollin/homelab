@@ -64,6 +64,7 @@ class Colors(Enum):
     green = "\033[32m"
     yellow = "\033[33m"
     blue = "\033[34m"
+    dark = "\033[90m"
     reset = "\033[0m"
 
     def __str__(self):
@@ -106,7 +107,10 @@ def setup_parser() -> argparse.Namespace:
     """
     Set up the command-line argument parser for the script.
     """
-    parser = argparse.ArgumentParser(description="Batch Docker Compose helper across projects.")
+    parser = argparse.ArgumentParser(
+        description="Batch Docker Compose helper across projects.",
+        epilog=f"Ignore a project by placing a '{IGNORE_FILE}' file in its directory.",
+    )
     parser.add_argument("--dry", action="store_true", help="dry run (no changes)")
     parser.add_argument("-l", "--list", action="store_true", help="display available projects and exit")
     parser.add_argument("-a", "--all", action="store_true", help="target all available projects")
@@ -140,13 +144,18 @@ def parse_projects_selection(user_targets: list[Any], all_projects: list[str]) -
     return projects, missing
 
 
-def list_projects(projects: list[str]) -> None:
+def list_projects(projects: list[str], base_dir: Path) -> None:
     """
     List all available projects in the current directory.
+    Indicates if a project is ignored.
     """
     print("Available projects:")
     for project in sorted(projects):
-        print(f"- {project}")
+        project_dir = base_dir / project
+        if (project_dir / IGNORE_FILE).exists():
+            print(f"- {Colors.dark}{project}{Colors.reset} {Colors.yellow}(ignored){Colors.reset}")
+        else:
+            print(f"- {project}")
 
 
 def main():
@@ -156,7 +165,7 @@ def main():
     all_projects = [p.name for p in base_dir.iterdir() if p.is_dir()]
 
     if args.list:
-        list_projects(all_projects)
+        list_projects(all_projects, base_dir)
         exit(0)
 
     actions = [action for action in Action if getattr(args, action.name)]
