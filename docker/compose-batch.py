@@ -242,7 +242,7 @@ class Action(Enum):
 
     def exec(self, cwd: Optional[Path] = None, dry: bool = False) -> None:
         if dry:
-            info(f"[DRY] {self.command_str}")
+            info(f"-> [DRY] {self.command_str}")
             return
 
         if self.value.requires_confirmation and not self.__cached:
@@ -390,19 +390,22 @@ def main():
     success(f"Actions: {actions}")
 
     for action in actions:
-        info(f"┌──{' [DRY] ' if args.dry else ' '}Action: {action.command_str}", prefix="\n")
+        info("================================================================================", "\n")
+        info(f"={' [DRY] ' if args.dry else ' '}Action: {action.command_str}")
+        info("================================================================================")
 
         if action.value.standalone:
-            info(f"│ (standalone)")
+            info(f"-> (standalone)")
             action.exec(dry=args.dry)
             continue
 
         for project in projects:
-            info(f"│ Project: {project}")
+            info(f"Project: {project}", "\n")
+            info("----------------------------------------")
 
             project_dir = base_dir / project
             if (project_dir / IGNORE_FILE).exists():
-                warning(f"│ skipping ({IGNORE_FILE} file present)")
+                warning(f"-> skipping ({IGNORE_FILE} file present)")
                 continue
 
             action.exec(cwd=project_dir, dry=args.dry)
