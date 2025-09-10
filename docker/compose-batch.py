@@ -242,7 +242,7 @@ class Action(Enum):
 
     def exec(self, cwd: Optional[Path] = None, dry: bool = False) -> None:
         if dry:
-            info(f"[DRY] {self.command_str}", prefix="")
+            info(f"[DRY] {self.command_str}")
             return
 
         if self.value.requires_confirmation and not self.__cached:
@@ -372,7 +372,6 @@ def main():
         exit(0)
 
     actions_all_standalone = all(action.value.standalone for action in actions)
-    prefix = "[DRY] " if args.dry else ""
 
     projects: list[str] = []
     if args.all:
@@ -382,31 +381,33 @@ def main():
         projects, missing = parse_projects_selection(args.projects, all_projects)
         if missing:
             warning(f"Projects not found, skipping: {missing}")
-        if not projects:
-            if not actions_all_standalone:
-                warning("No valid projects specified")
-                exit(1)
+        if not projects and not actions_all_standalone:
+            warning("No valid projects specified")
+            exit(1)
 
-            for action in actions:
-                info(f"-> {action.command_str} (standalone)", prefix)
-                action.exec(dry=args.dry)
-
-            exit(0)
-
-    success(f"Projects: {projects}")
+    if projects:
+        success(f"Projects: {projects}")
     success(f"Actions: {actions}")
 
-    for project in projects:
-        info(f"=== Project: {project}", prefix="\n")
+    for action in actions:
+        info(f"┌──{' [DRY] ' if args.dry else ' '}Action: {action.command_str}", prefix="\n")
 
-        project_dir = base_dir / project
-        if (project_dir / IGNORE_FILE).exists():
-            warning(f"-> skipping ({IGNORE_FILE} file present)")
+        if action.value.standalone:
+            info(f"│ (standalone)")
+            action.exec(dry=args.dry)
             continue
 
-        for action in actions:
-            info(f"-> {action.command_str}", prefix)
+        for project in projects:
+            info(f"│ Project: {project}")
+
+            project_dir = base_dir / project
+            if (project_dir / IGNORE_FILE).exists():
+                warning(f"│ skipping ({IGNORE_FILE} file present)")
+                continue
+
             action.exec(cwd=project_dir, dry=args.dry)
+
+    success("\nAll done")
 
 
 if __name__ == "__main__":
