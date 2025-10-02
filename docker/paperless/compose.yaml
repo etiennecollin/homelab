@@ -1,13 +1,13 @@
 ---
 services:
   paperless:
-    image: "ghcr.io/paperless-ngx/paperless-ngx:2.17"
+    image: "ghcr.io/paperless-ngx/paperless-ngx:2.18.4"
     container_name: "paperless"
     restart: "unless-stopped"
     depends_on:
       paperless-redis:
         condition: "service_started"
-      paperless-db:
+      paperless-postgres:
         condition: "service_started"
       paperless-gotenberg:
         condition: "service_started"
@@ -22,7 +22,7 @@ services:
       - "./secret.env"
     environment:
       PAPERLESS_DBENGINE: "postgresql"
-      PAPERLESS_DBHOST: "paperless-db"
+      PAPERLESS_DBHOST: "paperless-postgres"
       PAPERLESS_DBPORT: "5432"
       PAPERLESS_DBNAME: "paperless"
       PAPERLESS_DBUSER: "paperless"
@@ -43,8 +43,27 @@ services:
       - "traefik.http.routers.paperless.rule=Host(`paperless.${DOMAIN}`)"
       - "traefik.http.services.paperless.loadbalancer.server.port=8000"
 
+  paperless-postgres:
+    image: "docker.io/library/postgres:18.0"
+    container_name: "paperless-postgres"
+    restart: "unless-stopped"
+    volumes:
+      - "./config/pgdata:/var/lib/postgresql"
+    env_file:
+      - "./secret.env"
+    environment:
+      POSTGRES_DB: "paperless"
+      POSTGRES_USER: "paperless"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: "10s"
+      timeout: "5s"
+      retries: "5"
+    networks:
+      - "paperless"
+
   paperless-redis:
-    image: "docker.io/library/redis:8.0.3"
+    image: "docker.io/library/redis:8.2.1"
     container_name: "paperless-redis"
     restart: "unless-stopped"
     volumes:
@@ -52,22 +71,8 @@ services:
     networks:
       - "paperless"
 
-  paperless-db:
-    image: "docker.io/library/postgres:17.5"
-    container_name: "paperless-db"
-    restart: "unless-stopped"
-    volumes:
-      - "./config/pgdata:/var/lib/postgresql/data"
-    env_file:
-      - "./secret.env"
-    environment:
-      POSTGRES_DB: "paperless"
-      POSTGRES_USER: "paperless"
-    networks:
-      - "paperless"
-
   paperless-gotenberg:
-    image: "docker.io/gotenberg/gotenberg:8.20"
+    image: "docker.io/gotenberg/gotenberg:8.23.2"
     container_name: "paperless-gotenberg"
     restart: "unless-stopped"
     # The gotenberg chromium route is used to convert .eml files. We do not
@@ -80,7 +85,7 @@ services:
       - "paperless"
 
   paperless-tika:
-    image: "docker.io/apache/tika:3.2.1.0"
+    image: "docker.io/apache/tika:3.2.3.0"
     container_name: "paperless-tika"
     restart: "unless-stopped"
     networks:

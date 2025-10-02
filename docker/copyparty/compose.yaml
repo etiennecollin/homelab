@@ -1,6 +1,6 @@
 services:
   copyparty:
-    image: "copyparty/iv:latest"
+    image: "copyparty/iv:1.19.15"
     container_name: "copyparty"
     hostname: "copyparty"
     restart: "unless-stopped"
