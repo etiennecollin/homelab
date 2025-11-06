@@ -8,23 +8,54 @@
       href: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Wakesp"
       siteMonitor: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
-  - PiHole:
-      icon: "pi-hole.svg"
-      href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "Local DNS"
-      siteMonitor: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
-  - Vaultwarden:
-      icon: "vaultwarden.svg"
-      href: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "Password manager"
-      siteMonitor: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
-  - StirlingPDF:
-      icon: "stirling-pdf.svg"
-      href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "PDF tools"
-      siteMonitor: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Copyparty:
+      icon: "copyparty.svg"
+      href: "https://copyparty.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "File sharing"
+      siteMonitor: "https://copyparty.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Gatus:
+      icon: "gatus.svg"
+      href: "https://gatus.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Uptime & health checks"
+      siteMonitor: "https://gatus.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - IPMI:
+      icon: "supermicro.svg"
+      href: "https://ipmi.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Server management interface"
+      siteMonitor: "https://ipmi.{{HOMEPAGE_VAR_DOMAIN}}/"
   - ntfy:
       icon: "ntfy.svg"
       href: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Notifications service"
       siteMonitor: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Peanut:
+      icon: "nut.svg"
+      href: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Network UPS Tools"
+      siteMonitor: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Paperless:
+      icon: "paperless.svg"
+      href: "https://paperless.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Document scanning & management"
+      siteMonitor: "https://paperless.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - PiHole:
+      icon: "pi-hole.svg"
+      href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Local DNS & ad-blocking"
+      siteMonitor: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Traefik:
+      icon: "traefik.svg"
+      href: "https://traefik.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Reverse proxy"
+      siteMonitor: "https://traefik.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - "unifi-voucher-manager":
+      icon: "unifi.svg"
+      href: "https://vouchers.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "UniFi voucher manager"
+      siteMonitor: "https://vouchers.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Vaultwarden:
+      icon: "vaultwarden.svg"
+      href: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Password manager"
+      siteMonitor: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
+

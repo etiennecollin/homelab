@@ -21,6 +21,12 @@ hideVersion: "true"
 language: "en-CA"
 
 layout:
+  Tools:
+    header: "false"
+    tab: "Services"
+    style: "row"
+    columns: "3"
+
   Entertainment:
     tab: "Bookmarks"
     style: "column"
@@ -33,12 +39,6 @@ layout:
     tab: "Bookmarks"
     style: "column"
     fiveColumns: "true"
-
-  Tools:
-    header: "false"
-    tab: "Services"
-    style: "row"
-    columns: "4"
 
 quicklaunch:
   searchDescriptions: "true"

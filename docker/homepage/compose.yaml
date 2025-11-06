@@ -19,6 +19,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+    dns:
+      - "${MAIN_DNS}"
     networks:
       - "proxy"
       - "socket-proxy"
