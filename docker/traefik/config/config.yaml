@@ -12,6 +12,9 @@ http:
     unifi:
       rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
       service: "unifi"
+    ups:
+      rule: '{{ expandenv "Host(`ups.$DOMAIN`)" }}'
+      service: "ups"
     homeassistant:
       rule: '{{ expandenv "Host(`homeassistant.$DOMAIN`)" }}'
       service: "homeassistant"
@@ -33,6 +36,10 @@ http:
       loadBalancer:
         servers:
           - url: '{{ expandenv "https://$UNIFI_IP" }}'
+    ups:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "https://$UPS_IP" }}'
     homeassistant:
       loadBalancer:
         servers:

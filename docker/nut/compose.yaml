@@ -2,24 +2,30 @@
 services:
   nut-upsd:
     container_name: "nut-upsd"
-    image: "instantlinux/nut-upsd:2.8.2-r2"
+    image: "instantlinux/nut-upsd:2.8.3-r2"
     restart: "unless-stopped"
-    devices:
-      - "/dev/bus/usb"
+    # devices:
+    #   - "/dev/bus/usb"
+    volumes:
+      - "./config/ups.conf:/etc/nut/local/ups.conf"
     env_file:
       - "./secret.env"
     environment:
       API_USER: "upsmon"
-      NAME: "eaton_9px1500rtn-l"
-      DESCRIPTION: "Server Rack UPS"
-      DRIVER: "usbhid-ups"
-      PORT: "auto"
+      NAME: "eaton_9px1500rt-l"
+      # DESCRIPTION: "Eaton 9PX1500RT-L"
+      # DRIVER: "usbhid-ups"
+      # VENDORID: "0463"
+      # PORT: "auto"
+      NUT_DEBUG_LEVEL: 6
+    dns:
+      - "${MAIN_DNS}"
     networks:
       - "nut"
 
   peanut:
     container_name: "peanut"
-    image: "brandawg93/peanut:5.13.0"
+    image: "brandawg93/peanut:5.16.0"
     volumes:
       - "./config:/config"
     restart: "unless-stopped"
