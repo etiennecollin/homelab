@@ -9,6 +9,8 @@ services:
       - "./config/settings:/app/config"
       - "./config/images:/app/public/images"
     environment:
+      PUID: "${PUID}"
+      PGID: "${PGID}"
       HOMEPAGE_VAR_CITY: "${CITY}"
       HOMEPAGE_VAR_DOMAIN: "${DOMAIN}"
       HOMEPAGE_VAR_TIMEZONE: "${TIMEZONE}"
