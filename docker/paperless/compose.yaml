@@ -55,7 +55,7 @@ services:
       POSTGRES_DB: "paperless"
       POSTGRES_USER: "paperless"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U paperless"]
       interval: "10s"
       timeout: "5s"
       retries: "5"
