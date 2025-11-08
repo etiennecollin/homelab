@@ -17,7 +17,7 @@ services:
       # DRIVER: "usbhid-ups"
       # VENDORID: "0463"
       # PORT: "auto"
-      NUT_DEBUG_LEVEL: 6
+      # NUT_DEBUG_LEVEL: 6
     dns:
       - "${MAIN_DNS}"
     networks:
