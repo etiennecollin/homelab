@@ -6,21 +6,22 @@ services:
     restart: "unless-stopped"
     command:
       - "serve"
+    user: "${PUID}:${PGID}"
     environment:
       TZ: "${TIMEZONE}"
       NTFY_BASE_URL: "https://ntfy.${DOMAIN}"
-      NTFY_ATTACHMENT_CACHE_DIR: "/var/lib/ntfy/attachments"
+      NTFY_ATTACHMENT_CACHE_DIR: "/tmp/ntfy/attachments"
       NTFY_ATTACHMENT_FILE_SIZE_LIMIT: "25M"
-      NTFY_ATTACHMENT_TOTAL_SIZE_LIMIT: "5G"
-      NTFY_ATTACHMENT_EXPIRY_DURATION: "5h"
+      NTFY_ATTACHMENT_TOTAL_SIZE_LIMIT: "2G"
+      NTFY_ATTACHMENT_EXPIRY_DURATION: "12h"
       # NTFY_ENABLE_LOGIN: "true"
       # NTFY_AUTH_FILE: "/var/lib/ntfy/auth.db"
       # NTFY_AUTH_DEFAULT_ACCESS: "deny-all"
       NTFY_BEHIND_PROXY: "true"
       NTFY_UPSTREAM_BASE_URL: "https://ntfy.sh" # For IOS notifications
-    volumes:
-      - "./cache:/var/cache/ntfy"
-      # - "./config:/etc/ntfy"
+    # volumes:
+    #   - "/var/cache/ntfy:/var/cache/ntfy"
+    #   - "./config:/etc/ntfy"
     healthcheck:
       test:
         [
@@ -31,6 +32,7 @@ services:
       timeout: "10s"
       retries: "3"
       start_period: "40s"
+    init: "true" # needed, if healthcheck is used. Prevents zombie processes
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ntfy.rule=Host(`ntfy.${DOMAIN}`)"
