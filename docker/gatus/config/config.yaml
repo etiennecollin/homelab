@@ -1,27 +1,27 @@
 alerting:
   discord:
     webhook-url: "${DISCORD_WEBHOOK_URL}"
-  default-alert:
-      description: "Health Check Failed"
-      send-on-resolved: true
-      failure-threshold: 3
-      success-threshold: 2
+    default-alert:
+        send-on-resolved: true
+        failure-threshold: 3
+        success-threshold: 2
+  ntfy:
+    url: "https://ntfy.${DOMAIN}"
+    topic: "status"
+    click: "https://gatus.${DOMAIN}"
+    default-alert:
+        send-on-resolved: true
+        failure-threshold: 3
+        success-threshold: 2
 
 endpoints:
-  - name: "homepage"
+  - name: "Homepage"
     url: "https://${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
-      - type: "discord"
-
-  - name: "nextcloud"
-    url: "https://nextcloud.${DOMAIN}"
-    interval: "${INTERVAL}"
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
+      - type: "ntfy"
       - type: "discord"
 
   - name: "ntfy"
@@ -30,22 +30,25 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
       - type: "discord"
 
-  - name: "pihole"
+  - name: "PeaNUT"
+    url: "https://peanut.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "ntfy"
+      - type: "discord"
+
+  - name: "PiHole"
     url: "https://pihole.${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
-      - type: "discord"
-
-  - name: "stirling-pdf"
-    url: "https://stirling-pdf.${DOMAIN}"
-    interval: "${INTERVAL}"
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
+      - type: "ntfy"
       - type: "discord"
 
   - name: "traefik"
@@ -54,22 +57,25 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
       - type: "discord"
 
-  - name: "vaultwarden"
+  - name: "Vaultwarden"
     url: "https://vaultwarden.${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
       - type: "discord"
 
-  - name: "paperless"
+  - name: "Paperless"
     url: "https://paperless.${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
       - type: "discord"
 
   - name: "unifi-voucher-manager"
@@ -78,12 +84,32 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
       - type: "discord"
 
-  - name: "copyparty"
+  - name: "Copyparty"
     url: "https://copyparty.${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"
     alerts:
+      - type: "ntfy"
+      - type: "discord"
+
+  - name: "Wakesp"
+    url: "https://wakesp.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "ntfy"
+      - type: "discord"
+
+  - name: "IPMI"
+    url: "https://ipmi.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "ntfy"
       - type: "discord"
