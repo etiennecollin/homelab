@@ -1,0 +1,111 @@
+---
+theme: "auto"
+
+server:
+  address: "tcp://:9091/"
+
+log:
+  level: "info"
+
+totp:
+  issuer: '{{ mustEnv "DOMAIN" }}'
+
+identity_validation:
+  reset_password:
+    jwt_secret: '{{ secret "/secrets/jwt" }}'
+
+authentication_backend:
+  password_reset:
+    disable: "true"
+  file:
+    path: "/config/users_database.yml"
+
+password_policy:
+  standard:
+    enabled: "true"
+    min_length: "8"
+    max_length: "0"
+    require_uppercase: "true"
+    require_lowercase: "true"
+    require_number: "true"
+    require_special: "true"
+
+access_control:
+  default_policy: "deny"
+
+  rules:
+    # Bypass auth for auth itself (prevents infinite loop of auth)
+    - domain:
+        - 'auth.{{ mustEnv "DOMAIN" }}'
+      policy: "bypass"
+
+    # Bypass auth for requests coming from other containers (gatus healthchecks)
+    - domain:
+        - '{{ mustEnv "DOMAIN" }}'
+        - '*.{{ mustEnv "DOMAIN" }}'
+      networks:
+        - '{{ mustEnv "AUTH_NETWORK" }}'
+      policy: "bypass"
+
+    # Bypass auth for services that should not have it
+    - domain:
+        - '{{ mustEnv "DOMAIN" }}'
+        - 'ntfy.{{ mustEnv "DOMAIN" }}'
+      policy: "bypass"
+
+    # Bypass auth for services who have their own auth
+    - domain:
+        - 'copyparty.{{ mustEnv "DOMAIN" }}'
+        - 'ipmi.{{ mustEnv "DOMAIN" }}'
+        - 'paperless.{{ mustEnv "DOMAIN" }}'
+        - 'pihole.{{ mustEnv "DOMAIN" }}'
+        - 'unifi.{{ mustEnv "DOMAIN" }}'
+        - 'vaultwarden.{{ mustEnv "DOMAIN" }}'
+      policy: "bypass"
+
+    # Bypass auth for some services if on the local network
+    - domain:
+        - 'vouchers.{{ mustEnv "DOMAIN" }}'
+      networks:
+        - '{{ mustEnv "MAIN_NETWORK" }}'
+      policy: "bypass"
+
+    # Enable auth for other services and restrict access based on group
+    - domain:
+        - '{{ mustEnv "DOMAIN" }}'
+        - '*.{{ mustEnv "DOMAIN" }}'
+      subject:
+        - "group:main"
+      policy: "one_factor"
+
+session:
+  secret: '{{ secret "/secrets/session_secret" }}'
+  cookies:
+    - name: "authelia_session"
+      domain: '{{ mustEnv "DOMAIN" }}'
+      authelia_url: 'https://auth.{{ mustEnv "DOMAIN" }}'
+      default_redirection_url: 'https://{{ mustEnv "DOMAIN" }}'
+      inactivity: "5 minutes"
+      expiration: "1 hour"
+      remember_me: "1 month"
+
+  redis:
+    host: "authelia-redis"
+    port: "6379"
+    # username: "authelia"
+    # password: "authelia"
+
+regulation:
+  max_retries: "3"
+  find_time: "2 minutes"
+  ban_time: "5 minutes"
+
+storage:
+  encryption_key: '{{ secret "/secrets/storage_encryption_key" }}'
+  local:
+    path: "/config/db.sqlite3"
+
+notifier:
+  disable_startup_check: "true"
+  filesystem:
+    filename: "/config/notification.txt"

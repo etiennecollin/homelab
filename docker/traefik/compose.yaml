@@ -6,7 +6,7 @@ services:
     restart: "unless-stopped"
     depends_on:
       socket-proxy:
-        condition: "service_started"
+        condition: "service_healthy"
     security_opt:
       - "no-new-privileges:true"
     ports:
@@ -22,7 +22,7 @@ services:
       PUBLIC_EMAIL: "${PUBLIC_EMAIL}"
     env_file:
       - "./secret.env"
-      - "./traefik.env"
+      - "./config/traefik.env"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN}`)"
@@ -32,6 +32,7 @@ services:
     networks:
       - "proxy"
       - "socket-proxy"
+      - "auth"
 
   socket-proxy:
     image: "lscr.io/linuxserver/socket-proxy:3.2.7"
@@ -68,6 +69,13 @@ services:
 
 networks:
   proxy:
-    external: "true"
+    name: "proxy"
+    driver: "bridge"
+    ipam:
+      config:
+        - subnet: "${PROXY_NETWORK}"
   socket-proxy:
+    name: "socket-proxy"
+    driver: "bridge"
+  auth:
     external: "true"

@@ -51,6 +51,7 @@ http:
         middlewares:
           - "default-security-headers@file"
           - "gzip@file"
+          - "authelia@docker"
 
     default-security-headers:
       headers:
