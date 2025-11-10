@@ -63,7 +63,7 @@ services:
       - "paperless"
 
   paperless-redis:
-    image: "docker.io/library/redis:8.2.3"
+    image: "redis:alpine"
     container_name: "paperless-redis"
     restart: "unless-stopped"
     volumes:
@@ -96,3 +96,4 @@ networks:
     external: "true"
   paperless:
     name: "paperless"
+    driver: "bridge"

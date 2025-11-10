@@ -3,11 +3,11 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Tools:
-  - Wakesp:
-      icon: "espressif.svg"
-      href: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "Wakesp"
-      siteMonitor: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Auth:
+      icon: "authelia.svg"
+      href: "https://auth.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Authentication"
+      siteMonitor: "https://auth.{{HOMEPAGE_VAR_DOMAIN}}/"
   - Copyparty:
       icon: "copyparty.svg"
       href: "https://copyparty.{{HOMEPAGE_VAR_DOMAIN}}/"
@@ -28,16 +28,16 @@
       href: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Notifications service"
       siteMonitor: "https://ntfy.{{HOMEPAGE_VAR_DOMAIN}}/"
-  - Peanut:
-      icon: "nut.svg"
-      href: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
-      description: "Network UPS Tools"
-      siteMonitor: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
   - Paperless:
       icon: "paperless.svg"
       href: "https://paperless.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Document scanning & management"
       siteMonitor: "https://paperless.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Peanut:
+      icon: "nut.svg"
+      href: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Network UPS Tools"
+      siteMonitor: "https://peanut.{{HOMEPAGE_VAR_DOMAIN}}/"
   - PiHole:
       icon: "pi-hole.svg"
       href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
@@ -58,4 +58,8 @@
       href: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Password manager"
       siteMonitor: "https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}/"
-
+  - Wakesp:
+      icon: "espressif.svg"
+      href: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Wakesp"
+      siteMonitor: "https://wakesp.{{HOMEPAGE_VAR_DOMAIN}}/"

@@ -60,6 +60,15 @@ endpoints:
       - type: "ntfy"
       - type: "discord"
 
+  - name: "Auth"
+    url: "https://auth.${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "ntfy"
+      - type: "discord"
+
   - name: "Vaultwarden"
     url: "https://vaultwarden.${DOMAIN}"
     interval: "${INTERVAL}"
