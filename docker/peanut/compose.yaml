@@ -26,6 +26,9 @@ services:
   peanut:
     container_name: "peanut"
     image: "brandawg93/peanut:5.16.0"
+    depends_on:
+      nut-upsd:
+        condition: "service_healthy"
     volumes:
       - "./config:/config"
     restart: "unless-stopped"
