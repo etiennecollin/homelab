@@ -22,7 +22,7 @@ services:
     restart: "unless-stopped"
     depends_on:
       vaultwarden:
-        condition: "service_started"
+        condition: "service_healthy"
     env_file:
       - "./secret.env"
     environment:
