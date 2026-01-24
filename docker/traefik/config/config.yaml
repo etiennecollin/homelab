@@ -31,7 +31,7 @@ http:
     pve:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$PVE_IP" }}'
+          - url: '{{ expandenv "https://$PVE_IP" }}'
     unifi:
       loadBalancer:
         servers:
