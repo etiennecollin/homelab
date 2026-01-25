@@ -9,6 +9,9 @@ http:
     pve:
       rule: '{{ expandenv "Host(`pve.$DOMAIN`)" }}'
       service: "pve"
+    truenas:
+      rule: '{{ expandenv "Host(`truenas.$DOMAIN`)" }}'
+      service: "truenas"
     unifi:
       rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
       service: "unifi"
@@ -32,6 +35,10 @@ http:
       loadBalancer:
         servers:
           - url: '{{ expandenv "https://$PVE_IP" }}'
+    truenas:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "https://$TRUENAS_IP" }}'
     unifi:
       loadBalancer:
         servers:
