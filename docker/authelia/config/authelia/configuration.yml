@@ -51,6 +51,8 @@ access_control:
     - domain:
         - '{{ mustEnv "DOMAIN" }}'
         - 'ntfy.{{ mustEnv "DOMAIN" }}'
+        - 'gatus.{{ mustEnv "DOMAIN" }}'
+        - 'peanut.{{ mustEnv "DOMAIN" }}'
       policy: "bypass"
 
     # Bypass auth for services who have their own auth
@@ -61,6 +63,9 @@ access_control:
         - 'pihole.{{ mustEnv "DOMAIN" }}'
         - 'unifi.{{ mustEnv "DOMAIN" }}'
         - 'vaultwarden.{{ mustEnv "DOMAIN" }}'
+        - 'homeassistant.{{ mustEnv "DOMAIN" }}'
+        - 'truenas.{{ mustEnv "DOMAIN" }}'
+        - 'pve.{{ mustEnv "DOMAIN" }}'
       policy: "bypass"
 
     # Bypass auth for some services if on the local network
