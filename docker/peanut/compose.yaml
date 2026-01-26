@@ -2,7 +2,7 @@
 services:
   nut-upsd:
     container_name: "nut-upsd"
-    image: "instantlinux/nut-upsd:2.8.3-r2"
+    image: "instantlinux/nut-upsd:2.8.3-r3"
     restart: "unless-stopped"
     # devices:
     #   - "/dev/bus/usb"
@@ -25,7 +25,7 @@ services:
 
   peanut:
     container_name: "peanut"
-    image: "brandawg93/peanut:5.16.0"
+    image: "brandawg93/peanut:5.20.1"
     depends_on:
       nut-upsd:
         condition: "service_healthy"

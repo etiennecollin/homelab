@@ -1,7 +1,7 @@
 ---
 services:
   traefik:
-    image: "traefik:v3.6.0"
+    image: "traefik:v3.6.6"
     container_name: "traefik"
     restart: "unless-stopped"
     depends_on:
@@ -35,7 +35,7 @@ services:
       - "auth"
 
   socket-proxy:
-    image: "lscr.io/linuxserver/socket-proxy:3.2.7"
+    image: "lscr.io/linuxserver/socket-proxy:3.2.10"
     container_name: "socket-proxy"
     restart: "unless-stopped"
     expose:

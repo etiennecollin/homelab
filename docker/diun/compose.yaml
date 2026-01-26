@@ -1,7 +1,7 @@
 ---
 services:
   diun:
-    image: "crazymax/diun:4.29.0"
+    image: "crazymax/diun:4.31.0"
     container_name: "diun"
     hostname: "docker-diun"
     restart: "unless-stopped"

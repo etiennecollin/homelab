@@ -1,7 +1,7 @@
 ---
 services:
   authelia:
-    image: "authelia/authelia:4.39.14"
+    image: "authelia/authelia:4.39.15"
     container_name: "authelia"
     restart: "unless-stopped"
     depends_on:

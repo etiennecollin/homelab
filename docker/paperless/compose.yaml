@@ -1,7 +1,7 @@
 ---
 services:
   paperless:
-    image: "ghcr.io/paperless-ngx/paperless-ngx:2.19.5"
+    image: "ghcr.io/paperless-ngx/paperless-ngx:2.20.3"
     container_name: "paperless"
     restart: "unless-stopped"
     depends_on:
@@ -44,7 +44,7 @@ services:
       - "traefik.http.services.paperless.loadbalancer.server.port=8000"
 
   paperless-postgres:
-    image: "docker.io/library/postgres:18.0"
+    image: "docker.io/library/postgres:18.1"
     container_name: "paperless-postgres"
     restart: "unless-stopped"
     volumes:
@@ -72,7 +72,7 @@ services:
       - "paperless"
 
   paperless-gotenberg:
-    image: "docker.io/gotenberg/gotenberg:8.24.0"
+    image: "docker.io/gotenberg/gotenberg:8.25.1"
     container_name: "paperless-gotenberg"
     restart: "unless-stopped"
     # The gotenberg chromium route is used to convert .eml files. We do not
