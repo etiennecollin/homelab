@@ -2,7 +2,7 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 
-- Tools:
+- Services:
   - Auth:
       icon: "authelia.svg"
       href: "https://auth.{{HOMEPAGE_VAR_DOMAIN}}/"
@@ -18,6 +18,11 @@
       href: "https://gatus.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Uptime & health checks"
       siteMonitor: "https://gatus.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Homeassistant:
+      icon: "home-assistant.svg"
+      href: "https://homeassistant.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Homeassistant"
+      siteMonitor: "https://homeassistant.{{HOMEPAGE_VAR_DOMAIN}}/"
   - IPMI:
       icon: "supermicro.svg"
       href: "https://ipmi.{{HOMEPAGE_VAR_DOMAIN}}/"
@@ -43,11 +48,21 @@
       href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Local DNS & ad-blocking"
       siteMonitor: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Proxmox:
+      icon: "proxmox.svg"
+      href: "https://pve.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Proxmox"
+      siteMonitor: "https://pve.{{HOMEPAGE_VAR_DOMAIN}}/"
   - Traefik:
       icon: "traefik.svg"
       href: "https://traefik.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Reverse proxy"
       siteMonitor: "https://traefik.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Truenas:
+      icon: "truenas.svg"
+      href: "https://truenas.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Truenas"
+      siteMonitor: "https://truenas.{{HOMEPAGE_VAR_DOMAIN}}/"
   - "unifi-voucher-manager":
       icon: "unifi.svg"
       href: "https://vouchers.{{HOMEPAGE_VAR_DOMAIN}}/"

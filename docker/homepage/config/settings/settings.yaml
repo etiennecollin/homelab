@@ -21,22 +21,18 @@ hideVersion: "true"
 language: "en-CA"
 
 layout:
-  Tools:
+  Services:
     header: "false"
-    tab: "Services"
     style: "row"
     columns: "3"
 
   Entertainment:
-    tab: "Bookmarks"
     style: "column"
     fiveColumns: "true"
   Social:
-    tab: "Bookmarks"
     style: "column"
     fiveColumns: "true"
   Developer:
-    tab: "Bookmarks"
     style: "column"
     fiveColumns: "true"
 
