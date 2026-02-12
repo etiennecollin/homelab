@@ -1,56 +1,64 @@
 http:
   routers:
     wakesp:
-      rule: '{{ expandenv "Host(`wakesp.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`wakesp.${DOMAIN}`)" }}'
       service: "wakesp"
     ipmi:
-      rule: '{{ expandenv "Host(`ipmi.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`ipmi.${DOMAIN}`)" }}'
       service: "ipmi"
     pve:
-      rule: '{{ expandenv "Host(`pve.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`pve.${DOMAIN}`)" }}'
       service: "pve"
     truenas:
-      rule: '{{ expandenv "Host(`truenas.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`truenas.${DOMAIN}`)" }}'
       service: "truenas"
     unifi:
-      rule: '{{ expandenv "Host(`unifi.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`unifi.${DOMAIN}`)" }}'
       service: "unifi"
     ups:
-      rule: '{{ expandenv "Host(`ups.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`ups.${DOMAIN}`)" }}'
       service: "ups"
+    pihole:
+      rule: '{{ expandenv "Host(`pihole.${DOMAIN}`)" }}'
+      service: "pihole"
+      middlewares: "pihole-add-admin@file"
     homeassistant:
-      rule: '{{ expandenv "Host(`homeassistant.$DOMAIN`)" }}'
+      rule: '{{ expandenv "Host(`homeassistant.${DOMAIN}`)" }}'
       service: "homeassistant"
 
   services:
     wakesp:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$WAKESP_IP" }}'
+          - url: '{{ expandenv "http://${WAKESP_IP}" }}'
     ipmi:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "https://$IPMI_IP" }}'
+          - url: '{{ expandenv "https://${IPMI_IP}" }}'
     pve:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "https://$PVE_IP" }}'
+          - url: '{{ expandenv "https://${PVE_IP}" }}'
     truenas:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "https://$TRUENAS_IP" }}'
+          - url: '{{ expandenv "https://${TRUENAS_IP}" }}'
     unifi:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "https://$UNIFI_IP" }}'
+          - url: '{{ expandenv "https://${UNIFI_IP}" }}'
     ups:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "https://$UPS_IP" }}'
+          - url: '{{ expandenv "https://${UPS_IP}" }}'
+    pihole:
+      loadBalancer:
+        servers:
+          - url: '{{ expandenv "https://${PIHOLE_IP}" }}'
     homeassistant:
       loadBalancer:
         servers:
-          - url: '{{ expandenv "http://$HOMEASSISTANT_IP" }}'
+          - url: '{{ expandenv "http://${HOMEASSISTANT_IP}" }}'
 
   middlewares:
     default:
@@ -71,6 +79,12 @@ http:
         stsIncludeSubdomains: "true" # Add includeSubdomains to the Strict-Transport-Security header
         stsPreload: "true" # Add preload flag appended to the Strict-Transport-Security header
         stsSeconds: "63072000" # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
+
+    pihole-add-admin:
+      redirectregex:
+        regex: '{{ expandenv "pihole.${DOMAIN}/" }}$'
+        replacement: '{{ expandenv "pihole.${DOMAIN}/admin/" }}'
+        permanent: "true"
 
     # Enables the GZIP compression
     #   if the response body is larger than 1400 bytes
