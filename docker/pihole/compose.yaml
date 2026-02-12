@@ -5,6 +5,7 @@ services:
     hostname: "docker-pihole"
     ports:
       # DNS Ports
+      - "443:443"
       - "53:53/tcp"
       - "53:53/udp"
       # Uncomment the below if using Pi-hole as your DHCP Server
