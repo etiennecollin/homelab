@@ -2,7 +2,16 @@
 
 The following commands should be executed from this directory (`vaultwarden` directory containing the `compose.yaml`).
 
+## Setup Vaultwarden
+
+
 ## Setup Backups
+
+Make sure the `vaultwarden-rclone-data` volume exists. Create it with:
+
+```bash
+docker volume create vaultwarden-rclone-data
+```
 
 Use the remote name `VaultwardenBackup`. Setup rclone with:
 
