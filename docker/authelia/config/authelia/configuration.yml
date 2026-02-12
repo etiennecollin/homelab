@@ -52,7 +52,6 @@ access_control:
         - '{{ mustEnv "DOMAIN" }}'
         - 'ntfy.{{ mustEnv "DOMAIN" }}'
         - 'gatus.{{ mustEnv "DOMAIN" }}'
-        - 'peanut.{{ mustEnv "DOMAIN" }}'
       policy: "bypass"
 
     # Bypass auth for services who have their own auth
