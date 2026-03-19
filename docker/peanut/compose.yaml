@@ -8,6 +8,7 @@ services:
     restart: "unless-stopped"
     networks:
       - "proxy"
+      - "peanut"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.peanut.rule=Host(`peanut.${DOMAIN}`)"
@@ -16,3 +17,6 @@ services:
 networks:
   proxy:
     external: "true"
+  peanut:
+    name: "peanut"
+    driver: "bridge"
