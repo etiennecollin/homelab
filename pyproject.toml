@@ -1,0 +1,9 @@
+[project]
+name = "homelab"
+version = "0.1.0"
+description = "Homelab deployment system"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyinfra>=3.7",
+]
