@@ -44,7 +44,7 @@ access_control:
         - '{{ mustEnv "DOMAIN" }}'
         - '*.{{ mustEnv "DOMAIN" }}'
       networks:
-        - '{{ mustEnv "AUTH_NETWORK" }}'
+        - '{{ mustEnv "NETWORK_AUTH" }}'
       policy: "bypass"
 
     # Bypass auth for services that should not have it
@@ -71,7 +71,7 @@ access_control:
     - domain:
         - 'vouchers.{{ mustEnv "DOMAIN" }}'
       networks:
-        - '{{ mustEnv "MAIN_NETWORK" }}'
+        - '{{ mustEnv "NETWORK_MAIN" }}'
       policy: "bypass"
 
     # Enable auth for other services and restrict access based on group

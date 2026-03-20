@@ -73,7 +73,7 @@ networks:
     driver: "bridge"
     ipam:
       config:
-        - subnet: "${PROXY_NETWORK}"
+        - subnet: "${NETWORK_PROXY}"
   socket-proxy:
     name: "socket-proxy"
     driver: "bridge"

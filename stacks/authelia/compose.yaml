@@ -15,9 +15,9 @@ services:
       PGID: "${PGID}"
       TZ: "${TIMEZONE}"
       DOMAIN: "${DOMAIN}"
-      AUTH_NETWORK: "${AUTH_NETWORK}"
-      PROXY_NETWORK: "${PROXY_NETWORK}"
-      MAIN_NETWORK: "${MAIN_NETWORK}"
+      NETWORK_AUTH: "${NETWORK_AUTH}"
+      NETWORK_PROXY: "${NETWORK_PROXY}"
+      NETWORK_MAIN: "${NETWORK_MAIN}"
       X_AUTHELIA_CONFIG_FILTERS: "template"
     labels:
       - "traefik.enable=true"
@@ -49,4 +49,4 @@ networks:
     driver: "bridge"
     ipam:
       config:
-        - subnet: "${AUTH_NETWORK}"
+        - subnet: "${NETWORK_AUTH}"
