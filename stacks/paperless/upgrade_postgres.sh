@@ -53,33 +53,33 @@ if ! confirm "Have you set the new postgres version in the compose.yaml file?"; 
 fi
 
 color blue "Stopping ${container_app_name} container..."
-docker compose --env-file ../secret.env down --remove-orphans ${container_app_name}
+docker compose --env-file stack.env down --remove-orphans ${container_app_name}
 
 color blue "Current postgres version:"
-docker compose --env-file ../secret.env exec -T ${container_postgres_name} psql -U ${postgres_user} -c 'SELECT version();'
+docker compose --env-file stack.env exec -T ${container_postgres_name} psql -U ${postgres_user} -c 'SELECT version();'
 
 color blue "Backing up database to ${db_dump_file}..."
-docker compose --env-file ../secret.env exec -T ${container_postgres_name} pg_dumpall -U ${postgres_user} >${db_dump_file}
+docker compose --env-file stack.env exec -T ${container_postgres_name} pg_dumpall -U ${postgres_user} >${db_dump_file}
 
 color blue "Stopping ${container_postgres_name} container..."
-docker compose --env-file ../secret.env down --remove-orphans ${container_postgres_name}
+docker compose --env-file stack.env down --remove-orphans ${container_postgres_name}
 
 color blue "Backing up ${db_data_dir} to ${db_data_dir_old}"
 mv ${db_data_dir} ${db_data_dir_old}
 
 color blue "Pulling latest postgres image..."
-docker compose --env-file ../secret.env pull ${container_postgres_name}
+docker compose --env-file stack.env pull ${container_postgres_name}
 
 color blue "Starting container with new postgres image..."
-docker compose --env-file ../secret.env up -d --force-recreate ${container_postgres_name}
+docker compose --env-file stack.env up -d --force-recreate ${container_postgres_name}
 
 color blue "Waiting for the new postgres container to initialize..."
-until docker compose --env-file ../secret.env exec -T ${container_postgres_name} pg_isready -U ${postgres_user}; do
+until docker compose --env-file stack.env exec -T ${container_postgres_name} pg_isready -U ${postgres_user}; do
     sleep 2
 done
 
 color blue "Printing postgres logs:"
-docker compose --env-file ../secret.env logs --tail 100 --timestamps ${container_postgres_name}
+docker compose --env-file stack.env logs --tail 100 --timestamps ${container_postgres_name}
 
 if ! confirm "Continue with database restore? Make sure to check the logs for any errors."; then
   color red "Aborting database restore."
@@ -94,7 +94,7 @@ docker exec -i ${container_postgres_name} psql -U ${postgres_user} <${db_dump_fi
 color green "Database restored."
 
 color blue "Restarting ${container_app_name} container..."
-docker compose --env-file ../secret.env up -d --force-recreate ${container_app_name}
+docker compose --env-file stack.env up -d --force-recreate ${container_app_name}
 
 color blue "Once you have verified everything is working, you can delete the old db data with:"
 color blue "sudo rm -rf ${db_data_dir_old} ${db_dump_file}"

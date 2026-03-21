@@ -172,7 +172,7 @@ class Action(Enum):
     # Constants
     # ==========================================================================
 
-    __COMPOSE_COMMAND = ["docker", "compose", "--env-file", "../secret.env"]
+    __COMPOSE_COMMAND = ["docker", "compose", "--env-file", "stack.env"]
 
     # ==========================================================================
     # Enum entries

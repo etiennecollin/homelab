@@ -21,7 +21,7 @@ services:
       DOMAIN: "${DOMAIN}"
       PUBLIC_EMAIL: "${PUBLIC_EMAIL}"
     env_file:
-      - "./secret.env"
+      - "stack.env"
       - "./config/traefik.env"
     labels:
       - "traefik.enable=true"

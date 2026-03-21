@@ -9,7 +9,7 @@ services:
     volumes:
       - "./config:/data"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       TZ: "${TIMEZONE}"
       DIUN_WATCH_WORKERS: "10"

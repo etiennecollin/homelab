@@ -16,7 +16,7 @@ services:
       HOMEPAGE_VAR_TIMEZONE: "${TIMEZONE}"
       HOMEPAGE_ALLOWED_HOSTS: "${DOMAIN}"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"

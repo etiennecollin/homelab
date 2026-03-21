@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-ENV_FILE="secret.env"
+ENV_FILE="stack.env"
 OUTPUT_FILE="./config/settings.yml"
 
 # Ensure .env exists

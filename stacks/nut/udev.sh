@@ -36,7 +36,7 @@ info() {
 
 usage() {
   cat <<EOF
-Usage: $0 [path/to/secret.env] [-c|--create] [-f|--force] [-r|--remove]
+Usage: $0 [path/to/stack.env] [-c|--create] [-f|--force] [-r|--remove]
 
 Must be run as root.
 
@@ -107,9 +107,9 @@ if [ "${CREATE}" -ne 1 ]; then
 fi
 
 # Set default FILE if var not set
-: "${FILE:=./secret.env}"
+: "${FILE:=stack.env}"
 
-# Check secret.env exists
+# Check stack.env exists
 if [ ! -f "${FILE}" ]; then
   err "Secret file not found: ${FILE}"
   err "Create the file with VENDORID and PRODUCTID variables (e.g. VENDORID=1234)"

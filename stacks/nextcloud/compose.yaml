@@ -34,7 +34,7 @@ services:
     image: "lscr.io/linuxserver/mariadb:11.4.5"
     container_name: "nextcloud-mariadb"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       PGID: "${PGID}"
       PUID: "${PUID}"

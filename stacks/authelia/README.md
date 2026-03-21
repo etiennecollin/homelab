@@ -15,6 +15,6 @@ Fill them with random 128+ char keys.
 To compute the hash of user passwords (`./config/authelia/users_database.yml`), when Authelia is running, run:
 
 ```bash
-docker compose --env-file ../secret.env exec authelia authelia crypto hash generate
+docker compose --env-file stack.env exec authelia authelia crypto hash generate
 ```
 

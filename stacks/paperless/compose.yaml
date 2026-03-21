@@ -19,7 +19,7 @@ services:
       - "./config/export:/usr/src/paperless/export"
       - "./config/media:/usr/src/paperless/media"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       PAPERLESS_DBENGINE: "postgresql"
       PAPERLESS_DBHOST: "paperless-postgres"
@@ -50,7 +50,7 @@ services:
     volumes:
       - "./config/pgdata:/var/lib/postgresql"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       POSTGRES_DB: "paperless"
       POSTGRES_USER: "paperless"

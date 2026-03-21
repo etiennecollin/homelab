@@ -5,7 +5,7 @@ services:
     image: "twinproduction/gatus:v5.34.0"
     restart: "unless-stopped"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       DOMAIN: "${DOMAIN}"
       INTERVAL: "1m"

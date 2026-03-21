@@ -11,7 +11,7 @@ services:
     volumes:
       - "./config/ups.conf:/etc/nut/local/ups.conf"
     env_file:
-      - "./secret.env"
+      - "stack.env"
     environment:
       API_USER: "upsmon"
       NAME: "eaton_9px1500rt-l"
