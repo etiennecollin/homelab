@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 from shlex import quote
 from textwrap import dedent
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 from pyinfra.context import host
 from pyinfra.facts.server import Command
@@ -43,11 +43,11 @@ class StackName(str, Enum):
 @dataclass
 class Stack:
     stack: StackName
-    env: dict[str, str] = field(default_factory=dict)
     enabled: bool = True
+    env: dict[str, str] = field(default_factory=dict)
     depends_on: list[StackName] = field(default_factory=list)
-
-    pre_deploy: Optional[Callable[[str], None]] = None
+    pre_deploy: Optional[Callable[["Stack"], None]] = None
+    kwargs: dict[str, Any] = field(default_factory=dict)
 
     @property
     def name(self) -> str:
@@ -105,7 +105,7 @@ class Stack:
         # Pre-deploy hook
         # -------------------------
         if self.pre_deploy:
-            self.pre_deploy(self.name)
+            self.pre_deploy(self)
 
         # -------------------------
         # Validate
