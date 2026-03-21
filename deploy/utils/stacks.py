@@ -45,7 +45,6 @@ class Stack:
     stack: StackName
     enabled: bool = True
     env: dict[str, str] = field(default_factory=dict)
-    depends_on: list[StackName] = field(default_factory=list)
     pre_deploy: Optional[Callable[["Stack"], None]] = None
     kwargs: dict[str, Any] = field(default_factory=dict)
 
