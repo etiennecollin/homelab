@@ -12,6 +12,7 @@ class Server:
     compose_stacks_path: str
     docker_user: str
     docker_group: str
+    docker_use_sudo: bool = field(default=True)
     env: dict[str, str] = field(default_factory=dict)
     kwargs: dict[str, Any] = field(default_factory=dict)
 
@@ -27,6 +28,7 @@ class Server:
                 "ssh_user": self.ssh_user,
                 "docker_user": self.docker_user,
                 "docker_group": self.docker_group,
+                "docker_use_sudo": self.docker_use_sudo,
                 "compose_stacks_path": self.compose_stacks_path,
                 "stacks": stacks,
                 "env": self.env,

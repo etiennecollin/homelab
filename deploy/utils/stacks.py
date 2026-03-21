@@ -59,6 +59,7 @@ class Stack:
 
         # Environment
         shared_env = dget("env", {}) or {}
+        sudo_docker = dget("docker_use_sudo", True)
 
         # -------------------------
         # Ensure directory
@@ -115,7 +116,7 @@ class Stack:
                     cd {quote(str(remote_stack_dir))} && \\
                     docker compose --env-file stack.env config > /dev/null
                 """).strip()],
-            _sudo=True,
+            _sudo=sudo_docker,
         )
 
         # -------------------------
@@ -127,7 +128,7 @@ class Stack:
                     cd {quote(str(remote_stack_dir))} && \\
                     docker compose --env-file stack.env pull
                 """).strip()],
-            _sudo=True,
+            _sudo=sudo_docker,
         )
 
         # -------------------------
@@ -139,11 +140,12 @@ class Stack:
                     cd {quote(str(remote_stack_dir))} && \\
                     docker compose --env-file stack.env up -d --remove-orphans
                 """).strip()],
-            _sudo=True,
+            _sudo=sudo_docker,
         )
 
     def teardown(self):
         remote_stack_dir = remote_path(self.name)
+        sudo_docker = dget("docker_use_sudo", True)
 
         # -------------------------
         # Check if stack is running
@@ -151,7 +153,7 @@ class Stack:
         output = host.get_fact(
             Command,
             command="docker compose ls --format json",
-            _sudo=True,
+            _sudo=sudo_docker,
         )
         stacks = json.loads(output)
         is_running = any(
@@ -171,5 +173,5 @@ class Stack:
                 docker compose --env-file stack.env down --remove-orphans
             """).strip()],
             _if=lambda: is_running,
-            _sudo=True,
+            _sudo=sudo_docker,
         )
