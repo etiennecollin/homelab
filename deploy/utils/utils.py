@@ -1,3 +1,5 @@
+import secrets
+import string
 from pathlib import Path
 from typing import Any, Optional, TypeVar, overload
 
@@ -28,3 +30,8 @@ def remote_path(*parts) -> Path:
         compose_stacks_path = compose_stacks_path.replace("~", home, 1)
 
     return Path(compose_stacks_path, *parts)
+
+
+def get_key(length: int) -> str:
+    alphabet = string.ascii_letters + string.digits
+    return "".join(secrets.choice(alphabet) for _ in range(length))
