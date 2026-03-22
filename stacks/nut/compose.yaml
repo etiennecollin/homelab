@@ -13,8 +13,7 @@ services:
     env_file:
       - "stack.env"
     environment:
-      API_USER: "upsmon"
-      NAME: "eaton_9px1500rt-l"
+      NAME: "${UPS_NAME}"
       # DESCRIPTION: "Eaton 9PX1500RT-L"
       # DRIVER: "usbhid-ups"
       # VENDORID: "0463"

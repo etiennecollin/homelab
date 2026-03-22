@@ -1,0 +1,23 @@
+NUT_SERVERS:
+  - HOST: nut.{{ DOMAIN }}
+    PORT: {{ NUT_SERVER_PORT }}
+    USERNAME: {{ NUT_SERVER_API_USERNAME }}
+    PASSWORD: {{ NUT_SERVER_API_PASSWORD }}
+    NAME: {{ UPS_NAME }}
+    DISABLED: false
+INFLUX_HOST: ""
+INFLUX_TOKEN: ""
+INFLUX_ORG: ""
+INFLUX_BUCKET: ""
+INFLUX_INTERVAL: 10
+DATE_FORMAT: YYYY/MM/DD
+TIME_FORMAT: 24-hour
+DASHBOARD_SECTIONS:
+  - key: KPIS
+    enabled: true
+  - key: CHARTS
+    enabled: true
+  - key: VARIABLES
+    enabled: true
+DISABLE_VERSION_CHECK: false
+TEMPERATURE_UNIT: celsius

@@ -5,5 +5,6 @@ description = "Homelab deployment system"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "argon2-cffi>=25.1.0",
     "pyinfra>=3.7",
 ]

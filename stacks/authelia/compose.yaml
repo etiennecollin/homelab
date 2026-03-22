@@ -34,8 +34,8 @@ services:
     image: "redis:alpine"
     container_name: "authelia-redis"
     restart: "unless-stopped"
-    volumes:
-      - "./config/redis:/data"
+    # volumes:
+    #   - "./config/redis:/data"
     environment:
       TZ: "${TIMEZONE}"
     networks:
@@ -45,8 +45,4 @@ networks:
   proxy:
     external: "true"
   auth:
-    name: "auth"
-    driver: "bridge"
-    ipam:
-      config:
-        - subnet: "${NETWORK_AUTH}"
+    external: "true"

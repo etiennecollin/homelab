@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from deploy.utils.stacks import Stack
+from pyinfra.context import config
+
+from .stacks import Stack
 
 
 @dataclass
@@ -14,9 +16,10 @@ class Server:
     docker_group: str
     docker_use_sudo: bool = field(default=True)
     env: dict[str, str] = field(default_factory=dict)
+    temp_dir: str = field(default=config.DEFAULT_TEMP_DIR)
     kwargs: dict[str, Any] = field(default_factory=dict)
 
-    def deploy(self, stacks: list[Stack]) -> tuple[str, dict]:
+    def deploy(self, stacks: list[Stack], dry: bool = False) -> tuple[str, dict]:
         """
         Convert this server definition into pyinfra host.data.
         """
@@ -30,8 +33,10 @@ class Server:
                 "docker_group": self.docker_group,
                 "docker_use_sudo": self.docker_use_sudo,
                 "compose_stacks_path": self.compose_stacks_path,
+                "dry_run": dry,
                 "stacks": stacks,
                 "env": self.env,
+                "_temp_dir": self.temp_dir,
                 **self.kwargs,
             },
         )

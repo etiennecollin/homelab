@@ -8,3 +8,9 @@ for stack in stacks:
     if not stack.enabled:
         continue
     stack.deploy()
+
+# Start all stacks assigned to this host
+for stack in stacks:
+    if not stack.enabled:
+        continue
+    stack.start()

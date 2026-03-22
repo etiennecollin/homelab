@@ -1,0 +1,12 @@
+---
+users:
+{%- for user in users %}
+  {{ user.username }}:
+    disabled: {{ "true" if user.disabled else "false" }}
+    displayname: "{{ user.displayname }}"
+    password: "{{ user.password }}"
+    groups:
+{%- for group in user.groups %}
+      - "{{ group }}"
+{%- endfor %}
+{%- endfor %}

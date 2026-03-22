@@ -3,14 +3,14 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from shlex import quote
 from textwrap import dedent
-from typing import Callable, Optional
+from typing import Any, Callable, Optional, cast
 
 from pyinfra.context import host
 from pyinfra.facts.files import File
 from pyinfra.facts.server import Command
 from pyinfra.operations import files, server
 
-from deploy.utils.utils import Directory, FileCopy, dget, remote_path
+from .utils import Directory, FileCopy, dget, remote_path
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 STACKS_DIR = BASE_DIR / "stacks"
@@ -24,14 +24,14 @@ class StackBase:
     directories: list[Directory] = field(default_factory=list)
     static_files: list[FileCopy] = field(default_factory=list)
     template_files: list[FileCopy] = field(default_factory=list)
-    pre_deploy: Optional[Callable[["Stack"], None]] = None
+    post_deploy: Optional[Callable[["Stack"], None]] = None
 
 
 @dataclass
 class StackConfig:
     enabled: bool = True
     env: dict[str, str] = field(default_factory=dict)
-    template_vars: dict = field(default_factory=dict)
+    template_vars: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -140,6 +140,12 @@ class Stack:
         # -------------------------
         # Deploy templates
         # -------------------------
+        template_context = {
+            **shared_env,  # shared
+            **self.config.env,  # config
+            **self.config.template_vars,  # template
+        }
+
         for file in self.base.template_files:
             assert file.src is not None, "Template files require a source path"
             files.template(
@@ -151,14 +157,21 @@ class Stack:
                 user=dget("docker_user"),
                 group=dget("docker_group"),
                 _sudo=True,
-                **self.config.template_vars,
+                **cast(dict[str, Any], template_context),
             )
 
         # -------------------------
-        # Pre-deploy hook
+        # Post-deploy hook
         # -------------------------
-        if self.base.pre_deploy:
-            self.base.pre_deploy(self)
+        if self.base.post_deploy:
+            self.base.post_deploy(self)
+
+    def start(self):
+        if dget("dry_run", False):
+            return
+
+        remote_stack_dir = remote_path(self.name)
+        sudo_docker = dget("docker_use_sudo", True)
 
         # -------------------------
         # Validate

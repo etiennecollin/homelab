@@ -1,0 +1,10 @@
+[{{ UPS_NAME }}]
+    driver = "snmp-ups"
+    port = "{{ UPS_IP_ADDRESS }}"
+    snmp_version = "v3"
+    secLevel = "authNoPriv" # noAuthNoPriv | authNoPriv | authPriv
+    secName = "{{ SNMP_USERNAME }}"
+    authPassword = "{{ SNMP_PASSWORD }}"
+    authProtocol = "SHA512"
+    pollfreq = "15"
+    desc = "{{ UPS_DESCRIPTION }}"

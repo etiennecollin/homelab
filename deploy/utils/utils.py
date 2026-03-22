@@ -1,9 +1,16 @@
+from __future__ import annotations
+
 import secrets
 import string
-from dataclasses import dataclass
+import subprocess
+import sys
+import types
+from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 from typing import IO, Any, Optional, TypeVar, Union, overload
 
+from argon2 import PasswordHasher
 from pyinfra.context import host
 from pyinfra.facts.server import Home
 
@@ -78,7 +85,8 @@ def dget(key: str, default=None) -> Optional[Any]:
 
 
 def remote_path(*parts) -> Path:
-    compose_stacks_path = dget("compose_stacks_path", "/srv/homelab")
+    compose_stacks_path = dget("compose_stacks_path")
+    assert compose_stacks_path is not None, "compose_stacks_path must be specified"
 
     if compose_stacks_path.startswith("~"):
         home = host.get_fact(Home, user=dget("docker_user"))
@@ -88,6 +96,55 @@ def remote_path(*parts) -> Path:
     return Path(compose_stacks_path, *parts)
 
 
-def get_key(length: int) -> str:
+def get_random_key(length: int) -> str:
     alphabet = string.ascii_letters + string.digits + "`~!@#$%^&*()-_=+,<.>/?;:[{}]"
     return "".join(secrets.choice(alphabet) for _ in range(length))
+
+
+@dataclass
+class AutheliaUser:
+    username: str
+    displayname: str
+    password: str  # plaintext input
+    groups: list[str] = field(default_factory=list)
+    disabled: bool = False
+
+    def hashed(self) -> dict:
+        ph = PasswordHasher()
+        ph.verify
+        hashed = ph.hash(self.password)
+
+        return {
+            "username": self.username,
+            "displayname": self.displayname,
+            "password": hashed,
+            "groups": self.groups,
+            "disabled": self.disabled,
+        }
+
+
+@dataclass()
+class PiHoleAddressMap:
+    source: str
+    target: str
+
+    @classmethod
+    def to_env(cls, maps: list["PiHoleAddressMap"], src_dst_sep: str):
+        return ";".join([f"{map.source}{src_dst_sep}{map.target}" for map in maps])
+
+
+@lru_cache(maxsize=1)
+def load_encrypted_module(path: str, key_file: str, module_name: str) -> types.ModuleType:
+    """
+    Decrypt an age-encrypted Python file and load it as a module.
+    """
+    cmd = ["age", "-d", "-i", key_file, path]
+    proc = subprocess.run(cmd, capture_output=True, check=True)
+    code = proc.stdout.decode("utf-8")
+
+    module = types.ModuleType(module_name)
+    module.__file__ = path
+    sys.modules[module_name] = module
+
+    exec(code, module.__dict__)
+    return module
