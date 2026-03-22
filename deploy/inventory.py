@@ -1,8 +1,11 @@
-from deploy.servers_def import *
-from deploy.stacks_def import *
+from config import *
+from config.servers import localhost, raspberrypi, truenas
+
+# from pyinfra.context import config,
+# config.TEMP_DIR = "/run/user/950"
 
 servers = [
-    truenas.deploy([authelia]),
+    # truenas.deploy([nginx]),
     raspberrypi.deploy([pihole]),
-    localhost.deploy([nginx]),
+    localhost.deploy([traefik, authelia]),
 ]

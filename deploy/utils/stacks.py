@@ -1,56 +1,51 @@
 import json
 from dataclasses import dataclass, field
-from enum import Enum
 from pathlib import Path
 from shlex import quote
 from textwrap import dedent
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 
 from pyinfra.context import host
+from pyinfra.facts.files import File
 from pyinfra.facts.server import Command
 from pyinfra.operations import files, server
 
-from deploy.utils.utils import dget, remote_path
+from deploy.utils.utils import Directory, FileCopy, dget, remote_path
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 STACKS_DIR = BASE_DIR / "stacks"
-TEMPLATES_DIR = BASE_DIR / "templates"
+TEMPLATES_DIR = BASE_DIR / "deploy" / "templates"
 
 
-class StackName(str, Enum):
-    AUTHELIA = "authelia"
-    COPYPARTY = "copyparty"
-    DDCLIENT = "ddclient"
-    DIUN = "diun"
-    GATUS = "gatus"
-    HOMEPAGE = "homepage"
-    NETSHOOT = "netshoot"
-    NEXTCLOUD = "nextcloud"
-    NGINX = "nginx"
-    NTFY = "ntfy"
-    NUT = "nut"
-    PAPERLESS = "paperless"
-    PEANUT = "peanut"
-    PEANUT_MONITOR = "peanut-monitor"
-    PIHOLE = "pihole"
-    REDBOT = "redbot"
-    STIRLING_PDF = "stirling-pdf"
-    TRAEFIK = "traefik"
-    UNIFI_VOUCHER_MANAGER = "unifi-voucher-manager"
-    VAULTWARDEN = "vaultwarden"
+@dataclass
+class StackBase:
+    name: str
+
+    directories: list[Directory] = field(default_factory=list)
+    static_files: list[FileCopy] = field(default_factory=list)
+    template_files: list[FileCopy] = field(default_factory=list)
+    pre_deploy: Optional[Callable[["Stack"], None]] = None
+
+
+@dataclass
+class StackConfig:
+    enabled: bool = True
+    env: dict[str, str] = field(default_factory=dict)
+    template_vars: dict = field(default_factory=dict)
 
 
 @dataclass
 class Stack:
-    stack: StackName
-    enabled: bool = True
-    env: dict[str, str] = field(default_factory=dict)
-    pre_deploy: Optional[Callable[["Stack"], None]] = None
-    kwargs: dict[str, Any] = field(default_factory=dict)
+    base: StackBase
+    config: StackConfig = field(default_factory=StackConfig)
 
     @property
     def name(self) -> str:
-        return self.stack.value
+        return self.base.name
+
+    @property
+    def enabled(self) -> bool:
+        return self.config.enabled
 
     def deploy(self):
         # Directories
@@ -65,47 +60,105 @@ class Stack:
         # Ensure directory
         # -------------------------
         files.directory(
-            name=f"[{self.name}] create stack dir",
+            name=f"[{self.name}] create stack directory",
             path=str(remote_stack_dir),
             mode="755",
-            _sudo=True,
             user=dget("docker_user"),
             group=dget("docker_group"),
+            _sudo=True,
         )
+
+        # -------------------------
+        # Deploy directories
+        # -------------------------
+        for dir in self.base.directories:
+            files.directory(
+                name=f"[{self.name}] create directory {dir.path}",
+                path=str(dir.resolve_path(remote_stack_dir)),
+                mode=dir.mode,
+                user=dget("docker_user"),
+                group=dget("docker_group"),
+                _sudo=True,
+            )
 
         # -------------------------
         # Deploy compose.yaml
         # -------------------------
         files.put(
-            name=f"[{self.name}] deploy compose",
+            name=f"[{self.name}] deploy compose.yaml",
             src=str(local_stack_dir / "compose.yaml"),
             dest=str(remote_stack_dir / "compose.yaml"),
             mode="644",
-            _sudo=True,
             user=dget("docker_user"),
             group=dget("docker_group"),
+            _sudo=True,
         )
+
+        # -------------------------
+        # Deploy static files
+        # -------------------------
+        for file in self.base.static_files:
+            dest = str(file.resolve_dest(remote_stack_dir))
+
+            if file.src is not None:
+                files.put(
+                    name=f"[{self.name}] deploy {file.dest}",
+                    src=str(file.resolve_src(local_stack_dir)) if isinstance(file.src, Path) else file.src,
+                    dest=dest,
+                    mode=file.mode,
+                    create_remote_dir=False,  # Enforce usage of self.base.directories
+                    user=dget("docker_user"),
+                    group=dget("docker_group"),
+                    _sudo=True,
+                )
+            else:
+                files.file(
+                    name=f"[{self.name}] create file {file.dest}",
+                    path=dest,
+                    mode=file.mode,
+                    create_remote_dir=False,  # Enforce usage of self.base.directories
+                    user=dget("docker_user"),
+                    group=dget("docker_group"),
+                    _sudo=True,
+                )
 
         # -------------------------
         # Deploy stack.env
         # -------------------------
         files.template(
             name=f"[{self.name}] deploy stack.env",
-            src=str(TEMPLATES_DIR / "env.stack.j2"),
+            src=str(TEMPLATES_DIR / "stack.env.j2"),
             dest=str(remote_stack_dir / "stack.env"),
             mode="600",
-            _sudo=True,
             user=dget("docker_user"),
             group=dget("docker_group"),
+            _sudo=True,
             shared_env=shared_env,
-            stack_env=self.env,
+            stack_env=self.config.env,
         )
+
+        # -------------------------
+        # Deploy templates
+        # -------------------------
+        for file in self.base.template_files:
+            assert file.src is not None, "Template files require a source path"
+            files.template(
+                name=f"[{self.name}] deploy {file.dest}",
+                src=str(file.resolve_src(local_stack_dir)) if isinstance(file.src, Path) else file.src,
+                dest=str(file.resolve_dest(remote_stack_dir)),
+                mode=file.mode,
+                create_remote_dir=False,  # Enforce usage of self.base.directories
+                user=dget("docker_user"),
+                group=dget("docker_group"),
+                _sudo=True,
+                **self.config.template_vars,
+            )
 
         # -------------------------
         # Pre-deploy hook
         # -------------------------
-        if self.pre_deploy:
-            self.pre_deploy(self)
+        if self.base.pre_deploy:
+            self.base.pre_deploy(self)
 
         # -------------------------
         # Validate
@@ -138,7 +191,7 @@ class Stack:
             name=f"[{self.name}] deploy stack",
             commands=[dedent(f"""
                     cd {quote(str(remote_stack_dir))} && \\
-                    docker compose --env-file stack.env up -d --remove-orphans
+                    docker compose --env-file stack.env up -d --remove-orphans --force-recreate
                 """).strip()],
             _sudo=sudo_docker,
         )
