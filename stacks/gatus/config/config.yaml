@@ -2,21 +2,30 @@ alerting:
   discord:
     webhook-url: "${DISCORD_WEBHOOK_URL}"
     default-alert:
-        send-on-resolved: true
-        failure-threshold: 3
-        success-threshold: 2
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 2
   ntfy:
     url: "https://ntfy.${DOMAIN}"
     topic: "status"
     click: "https://gatus.${DOMAIN}"
     default-alert:
-        send-on-resolved: true
-        failure-threshold: 3
-        success-threshold: 2
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 2
 
 endpoints:
   - name: "Homepage"
     url: "https://${DOMAIN}"
+    interval: "${INTERVAL}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: "ntfy"
+      - type: "discord"
+
+  - name: "dockge"
+    url: "https://dockge.${DOMAIN}"
     interval: "${INTERVAL}"
     conditions:
       - "[STATUS] == 200"

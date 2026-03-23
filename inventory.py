@@ -12,11 +12,13 @@ hosts = [
             traefik,
             authelia,
             ntfy,
+            dockge,
             peanut,
+            # peanut_monitor, # FIXME
             homepage,
-            # vaultwarden,
-            # paperless,
-            copyparty,
+            vaultwarden,
+            # paperless, # missing
+            # copyparty, # FIXME: Environment missing XDG_CONFIG
             unifi_voucher_manager,
             gatus,
             diun,
@@ -26,7 +28,7 @@ hosts = [
 ]
 
 single = [
-    truenas.deploy([gatus, homepage]),
+    localhost.deploy([traefik]),
 ]
 
 pi = [

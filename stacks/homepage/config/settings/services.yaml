@@ -13,6 +13,11 @@
       href: "https://copyparty.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "File sharing"
       siteMonitor: "https://copyparty.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Dockge:
+      icon: "dockge.svg"
+      href: "https://dockge.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Docker monitoring"
+      siteMonitor: "https://dockge.{{HOMEPAGE_VAR_DOMAIN}}/"
   - Gatus:
       icon: "gatus.svg"
       href: "https://gatus.{{HOMEPAGE_VAR_DOMAIN}}/"

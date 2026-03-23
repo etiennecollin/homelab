@@ -5,6 +5,7 @@ from .authelia import AUTHELIA
 from .copyparty import COPYPARTY
 from .ddclient import DDCLIENT
 from .diun import DIUN
+from .dockge import DOCKGE
 from .gatus import GATUS
 from .homepage import HOMEPAGE
 from .nextcloud import NEXTCLOUD

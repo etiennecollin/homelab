@@ -1,0 +1,25 @@
+services:
+  dockge:
+    container_name: "dockge"
+    image: louislam/dockge:1
+    restart: unless-stopped
+    environment:
+      DOCKGE_STACKS_DIR: "${STACKS_PATH}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      # Stacks Directory
+      # ⚠️ READ IT CAREFULLY. If you did it wrong, your data could end up writing into a WRONG PATH.
+      # ⚠️ 1. FULL path only. No relative path (MUST)
+      # ⚠️ 2. Left Stacks Path === Right Stacks Path (MUST)
+      - "${STACKS_PATH}:${STACKS_PATH}"
+    networks:
+      - "proxy"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dockge.rule=Host(`dockge.${DOMAIN}`)"
+      - "traefik.http.services.dockge.loadbalancer.server.port=5001"
+
+networks:
+  proxy:
+    external: "true"
