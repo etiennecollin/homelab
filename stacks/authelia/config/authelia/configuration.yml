@@ -71,7 +71,9 @@ access_control:
     - domain:
         - 'vouchers.{{ mustEnv "DOMAIN" }}'
       networks:
-        - '{{ mustEnv "NETWORK_MAIN" }}'
+        - "10.0.0.0/8"
+        - "172.16.0.0/12"
+        - "192.168.0.0/16"
       policy: "bypass"
 
     # Enable auth for other services and restrict access based on group

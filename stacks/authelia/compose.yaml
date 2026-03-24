@@ -17,7 +17,6 @@ services:
       DOMAIN: "${DOMAIN}"
       NETWORK_AUTH: "${NETWORK_AUTH}"
       NETWORK_PROXY: "${NETWORK_PROXY}"
-      NETWORK_MAIN: "${NETWORK_MAIN}"
       X_AUTHELIA_CONFIG_FILTERS: "template"
     labels:
       - "traefik.enable=true"
