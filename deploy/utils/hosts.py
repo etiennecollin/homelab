@@ -7,7 +7,7 @@ from .stacks import Stack
 
 
 @dataclass
-class Server:
+class Host:
     name: str
     hostname: str
     ssh_user: str

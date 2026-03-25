@@ -1,5 +1,5 @@
 from config.common import DOMAIN, DOMAIN_TLD
-from deploy.utils.servers import Server
+from deploy.utils.hosts import Host
 
 COMMON = {
     "DOMAIN": DOMAIN,
@@ -13,7 +13,7 @@ COMMON = {
     "NETWORK_PROXY": "172.20.20.0/24",
 }
 
-truenas = Server(
+truenas = Host(
     name="truenas",
     hostname=f"nas.{DOMAIN}",
     ssh_user="truenas_admin",
@@ -25,7 +25,7 @@ truenas = Server(
 )
 
 
-raspberrypi = Server(
+raspberrypi = Host(
     name="raspberrypi",
     hostname=f"pi.{DOMAIN}",
     ssh_user="pi",
@@ -35,7 +35,7 @@ raspberrypi = Server(
     env=COMMON,
 )
 
-localhost = Server(
+localhost = Host(
     name="localhost",
     hostname="@local",
     ssh_user="etiennecollin",
