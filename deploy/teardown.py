@@ -1,6 +1,7 @@
 from typing import cast
 
-from deploy.utils.stacks import Stack, dget
+from deploy.utils.stacks import Stack
+from deploy.utils.utils import dget
 
 # Deploy all stacks assigned to this host
 stacks = cast(list[Stack], dget("stacks", []))

@@ -1,9 +1,10 @@
 from pyinfra import logger
 from pyinfra.context import host
-from pyinfra.operations import docker, server
+from pyinfra.operations import docker
 
 from deploy.utils.stacks import Stack, StackBase
-from deploy.utils.utils import Directory, FileCopy, dget, remote_path
+from deploy.utils.types import FileCopy
+from deploy.utils.utils import dget
 
 
 def post_deploy(self: Stack):

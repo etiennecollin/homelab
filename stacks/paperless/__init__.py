@@ -2,7 +2,7 @@ from pyinfra import logger
 from pyinfra.context import host
 
 from deploy.utils.stacks import Stack, StackBase
-from deploy.utils.utils import Directory, FileCopy
+from deploy.utils.types import FileCopy
 
 
 def post_deploy(self: Stack):

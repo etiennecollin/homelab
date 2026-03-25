@@ -28,7 +28,7 @@ hosts = [
 ]
 
 single = [
-    localhost.deploy([traefik]),
+    localhost.deploy([traefik], True),
 ]
 
 pi = [

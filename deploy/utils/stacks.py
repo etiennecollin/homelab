@@ -6,11 +6,11 @@ from textwrap import dedent
 from typing import Any, Callable, Optional, cast
 
 from pyinfra.context import host
-from pyinfra.facts.files import File
 from pyinfra.facts.server import Command
 from pyinfra.operations import files, server
 
-from .utils import Directory, FileCopy, dget, remote_path
+from .types import Directory, FileCopy
+from .utils import dget, remote_path
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 STACKS_DIR = BASE_DIR / "stacks"
@@ -54,7 +54,6 @@ class Stack:
 
         # Environment
         shared_env = dget("env", {}) or {}
-        sudo_docker = dget("docker_use_sudo", True)
 
         # -------------------------
         # Ensure directory

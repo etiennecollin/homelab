@@ -3,7 +3,8 @@ from io import StringIO
 from pyinfra.operations import files
 
 from deploy.utils.stacks import Stack, StackBase
-from deploy.utils.utils import Directory, FileCopy, get_random_key, remote_path
+from deploy.utils.types import Directory, FileCopy
+from deploy.utils.utils import get_random_key, remote_path
 
 
 def post_deploy(self: Stack):

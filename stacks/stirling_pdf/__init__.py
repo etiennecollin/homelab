@@ -1,7 +1,8 @@
 from pyinfra.operations import files
 
 from deploy.utils.stacks import Stack, StackBase
-from deploy.utils.utils import Directory, FileCopy, dget, remote_path
+from deploy.utils.types import Directory
+from deploy.utils.utils import dget, remote_path
 
 
 def post_deploy(self: Stack):

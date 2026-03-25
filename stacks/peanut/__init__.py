@@ -1,5 +1,5 @@
 from deploy.utils.stacks import StackBase
-from deploy.utils.utils import Directory, FileCopy
+from deploy.utils.types import Directory, FileCopy
 
 PEANUT = StackBase(
     "peanut",

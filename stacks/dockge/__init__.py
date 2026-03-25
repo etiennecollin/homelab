@@ -4,7 +4,7 @@ from textwrap import dedent
 from pyinfra.operations import server
 
 from deploy.utils.stacks import Stack, StackBase
-from deploy.utils.utils import Directory, FileCopy, dget, remote_path
+from deploy.utils.utils import dget, remote_path
 
 
 def post_deploy(self: Stack):
