@@ -2,12 +2,33 @@
 
 Infrastructure-as-code for a Docker-based homelab. The repository contains reusable stack definitions, encrypted per-host configuration, and pyinfra deployment entrypoints.
 
+<!-- vim-markdown-toc GFM -->
+
+- [Requirements](#requirements)
+- [Repository Layout](#repository-layout)
+- [Command Overview](#command-overview)
+  - [Deploy](#deploy)
+  - [Teardown](#teardown)
+  - [Prune](#prune)
+- [Editing Encrypted Configuration](#editing-encrypted-configuration)
+- [Adding a New Stack](#adding-a-new-stack)
+- [Adding a New Host](#adding-a-new-host)
+
+<!-- vim-markdown-toc -->
+
 ## Requirements
 
 - [uv](https://github.com/astral-sh/uv)
 - [age](https://github.com/FiloSottile/age)
 
-## Command overview
+## Repository Layout
+
+- `./config/`: Encrypted runtime configuration.
+- `./deploy/`: pyinfra inventory, operations, and helper utilities.
+- `./stacks/`: Stack definitions and stack-specific helpers.
+- `./scripts/`: Utility scripts such as `age.sh`.
+
+## Command Overview
 
 Use pyinfra's `--limit` flag to target one host or a group of hosts.
 
@@ -37,7 +58,7 @@ Remove unused and dangling Docker images.
 uv run pyinfra inventory.py deploy/prune.py
 ```
 
-## Editing encrypted configuration
+## Editing Encrypted Configuration
 
 The repository uses [age](https://github.com/FiloSottile/age) to encrypt Python configuration files. The encrypted files are the source of truth at runtime.
 
@@ -68,14 +89,7 @@ After editing `./config/common.py` and `./config/stacks.py`, re-encrypt them wit
 
 The `-d` flag removes the plaintext file after encryption.
 
-## Repository layout
-
-- `./config/`: Encrypted runtime configuration.
-- `./deploy/`: pyinfra inventory, operations, and helper utilities.
-- `./stacks/`: Stack definitions and stack-specific helpers.
-- `./scripts/`: Utility scripts such as `age.sh`.
-
-## Adding a new stack
+## Adding a New Stack
 
 1. Create a new directory under `./stacks/`.
    - Use lowercase letters and underscores only.
@@ -94,7 +108,7 @@ The `-d` flag removes the plaintext file after encryption.
    - Use the `Host` object for the target machine.
    - Add the stack to that host's deployment list.
 
-## Adding a new host
+## Adding a New Host
 
 1. Add a new `Host` object in `./hosts.py`.
 2. Register that host in `./inventory.py`.
