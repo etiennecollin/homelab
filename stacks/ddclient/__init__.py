@@ -1,8 +1,11 @@
+from pathlib import Path
+
 from deploy.utils.stacks import StackBase
 from deploy.utils.types import Directory, FileCopy
 
+STACK_NAME = Path(__file__).parent.name
 DDCLIENT = StackBase(
-    "ddclient",
+    STACK_NAME,
     directories=[
         Directory("config"),
     ],

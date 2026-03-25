@@ -1,4 +1,5 @@
 from io import StringIO
+from pathlib import Path
 
 from pyinfra.operations import files
 
@@ -18,8 +19,9 @@ def post_deploy(self: Stack):
     )
 
 
+STACK_NAME = Path(__file__).parent.name
 AUTHELIA = StackBase(
-    "authelia",
+    STACK_NAME,
     directories=[
         Directory("config"),
         Directory("config/authelia"),

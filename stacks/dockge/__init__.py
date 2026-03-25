@@ -1,3 +1,4 @@
+from pathlib import Path
 from shlex import quote
 from textwrap import dedent
 
@@ -23,7 +24,8 @@ def post_deploy(self: Stack):
     )
 
 
+STACK_NAME = Path(__file__).parent.name
 DOCKGE = StackBase(
-    "dockge",
+    STACK_NAME,
     post_deploy=post_deploy,
 )

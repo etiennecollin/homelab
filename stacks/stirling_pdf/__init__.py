@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pyinfra.operations import files
 
 from deploy.utils.stacks import Stack, StackBase
@@ -29,8 +31,9 @@ def post_deploy(self: Stack):
     )
 
 
+STACK_NAME = Path(__file__).parent.name
 STIRLING_PDF = StackBase(
-    "stirling_pdf",
+    STACK_NAME,
     directories=[
         Directory("config"),
         Directory("config/tessdata"),

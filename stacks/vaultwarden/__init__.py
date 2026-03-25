@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pyinfra import logger
 from pyinfra.context import host
 from pyinfra.operations import docker
@@ -20,8 +22,9 @@ def post_deploy(self: Stack):
     logger.warning(f"[{host.name}] [{self.name}] refer to README.md to initialize the rclone backup target")
 
 
+STACK_NAME = Path(__file__).parent.name
 VAULTWARDEN = StackBase(
-    "vaultwarden",
+    STACK_NAME,
     static_files=[
         FileCopy("README.md", "README.md"),
     ],
