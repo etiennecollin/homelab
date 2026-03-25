@@ -19,35 +19,154 @@ TEMPLATES_DIR = BASE_DIR / "deploy" / "templates"
 
 @dataclass
 class StackBase:
+    """
+    Immutable definition of a stack.
+
+    This class represents the *base layer* of a stack, which is intended to be
+    version-controlled and shared across environments. It contains everything
+    required to deploy the stack except for user-specific configuration.
+
+    Responsibilities:
+    - Define filesystem structure (directories)
+    - Define static files to copy
+    - Define Jinja2 templates to render
+    - Optionally define a post-deployment hook
+
+    This class MUST NOT contain any sensitive data or environment-specific values.
+    """
+
     name: str
+    """
+    Name of the stack, should match the name of the stack directory in `./stacks`
+    """
 
     directories: list[Directory] = field(default_factory=list)
+    """
+    List of directories that must exist on the remote host prior to deployment.
+    These are created with controlled permissions.
+    """
+
     static_files: list[FileCopy] = field(default_factory=list)
+    """
+    Files copied as-is to the remote host. These may optionally be empty files
+    if `src` is None.
+    """
+
     template_files: list[FileCopy] = field(default_factory=list)
+    """
+    Files rendered using Jinja2. The rendering context is composed of:
+    - shared environment variables
+    - stack-specific environment variables
+    - stack-specific template variables
+    """
+
     post_deploy: Optional[Callable[["Stack"], None]] = None
+    """
+    Optional callback executed after all files are deployed. This can be used
+    for additional pyinfra operations that are not covered by the standard flow.
+    Receives the instantiated `Stack` as its only argument.
+    """
 
 
 @dataclass
 class StackConfig:
+    """
+    User-defined configuration for a stack.
+
+    This class represents the configuration layer of a stack, typically stored
+    in encrypted files. It contains environment-specific and sensitive values.
+
+    Responsibilities:
+    - Enable/disable the stack
+    - Provide environment variables for docker-compose
+    - Provide variables used in Jinja2 templates
+    """
+
     enabled: bool = True
+    """
+     Whether this stack should be deployed. Disabled stacks are ignored
+    during deployment.
+    """
+
     env: dict[str, str] = field(default_factory=dict)
+    """
+    Environment variables injected into:
+    - the generated `stack.env` file
+    - the docker-compose runtime (`--env-file`)
+    These override shared environment variables when keys overlap.
+    """
+
     template_vars: dict[str, Any] = field(default_factory=dict)
+    """
+    Arbitrary variables passed to Jinja2 templates. These take highest
+    precedence in the rendering context and can override values from `env`
+    or shared variables if necessary.
+    """
 
 
 @dataclass
 class Stack:
+    """
+    Fully instantiated stack combining base definition and user configuration.
+
+    This class is the runtime representation of a stack. It merges the immutable
+    `StackBase` with a `StackConfig` and provides deployment lifecycle operations.
+
+    Responsibilities:
+    - Materialize filesystem structure on the remote host
+    - Render configuration files and templates
+    - Manage docker-compose lifecycle (deploy, start, teardown)
+
+    The deployment process is split into phases:
+    - deploy(): filesystem + configuration rendering
+    - start(): docker-compose validation, pull, and up
+    - teardown(): conditional shutdown of running stacks
+    """
+
     base: StackBase
+    """The base stack definition (shared, non-sensitive)."""
+
     config: StackConfig = field(default_factory=StackConfig)
+    """The user-provided configuration (environment-specific, possibly sensitive)."""
 
     @property
     def name(self) -> str:
+        """
+        Returns the stack name.
+
+        This is a convenience proxy to `StackBase.name`.
+        """
         return self.base.name
 
     @property
     def enabled(self) -> bool:
+        """
+        Indicates whether this stack is enabled.
+
+        This is a convenience proxy to `StackConfig.enabled`.
+        """
         return self.config.enabled
 
     def deploy(self):
+        """
+        Prepare the stack on the remote host.
+
+        This method is responsible for all filesystem and configuration steps:
+        - Create the root stack directory
+        - Create declared subdirectories
+        - Upload the docker-compose file
+        - Upload static files
+        - Render and upload `stack.env`
+        - Render and upload template files
+        - Execute optional post-deploy hook
+
+        Notes:
+        - All operations are performed with controlled ownership and permissions.
+        - Template rendering context is merged as:
+            - shared_env < config.env < config.template_vars
+        - Docker containers are NOT started here. Use `start()` for that.
+        """
+
         # Directories
         local_stack_dir = STACKS_DIR / self.name
         remote_stack_dir = remote_path(self.name)
@@ -166,6 +285,22 @@ class Stack:
             self.base.post_deploy(self)
 
     def start(self):
+        """
+        Start or update the stack using docker-compose.
+
+        This method performs:
+        - Validation of the compose configuration
+        - Pulling of container images
+        - Deployment via `docker compose up`
+
+        Behavior:
+        - Uses `stack.env` for environment injection
+        - Forces recreation of containers to ensure consistency
+
+        Notes:
+        - No action is taken if `dry_run` is enabled
+        - Assumes `deploy()` has already been executed
+        """
         if dget("dry_run", False):
             return
 
@@ -209,6 +344,22 @@ class Stack:
         )
 
     def teardown(self):
+        """
+        Stop the stack if it is currently running.
+
+        This method:
+        - Queries docker for active compose stacks
+        - Checks if this stack is running and matches the expected path
+        - Executes `docker compose down` if needed
+
+        Behavior:
+        - No-op if the stack is not running
+        - Uses `--remove-orphans` to ensure a clean shutdown
+
+        Notes:
+        - Matching is done using both stack name and compose file path
+            to avoid interfering with unrelated stacks
+        """
         remote_stack_dir = remote_path(self.name)
         sudo_docker = dget("docker_use_sudo", True)
 
