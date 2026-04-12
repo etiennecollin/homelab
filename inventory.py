@@ -31,6 +31,10 @@ single = [
     localhost.deploy([traefik], True),
 ]
 
+update = [
+    truenas.deploy([vaultwarden]),
+]
+
 pi = [
     raspberrypi.deploy([pihole, nut]),
 ]
