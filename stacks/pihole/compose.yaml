@@ -1,6 +1,6 @@
 services:
   pihole:
-    image: "pihole/pihole:2025.11.1"
+    image: "pihole/pihole:2026.04.1"
     container_name: "pihole"
     hostname: "docker-pihole"
     ports:
@@ -24,9 +24,9 @@ services:
       PIHOLE_UID: "${PUID}"
       TZ: "${TIMEZONE}"
     dns:
-        - "127.0.0.1"
-        - "9.9.9.11"
-        - "149.112.112.11"
+      - "127.0.0.1"
+      - "9.9.9.11"
+      - "149.112.112.11"
     volumes:
       - "./config/etc-pihole:/etc/pihole"
       - "./config/adlists.list:/etc/pihole/adlists.list:ro"
