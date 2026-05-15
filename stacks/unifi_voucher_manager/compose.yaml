@@ -2,7 +2,7 @@
 services:
   unifi-voucher-manager:
     container_name: "unifi-voucher-manager"
-    image: "etiennecollin/unifi-voucher-manager:1.4.2"
+    image: "etiennecollin/unifi-voucher-manager:1.4.3"
     restart: "unless-stopped"
     env_file:
       - "stack.env"
@@ -20,4 +20,3 @@ services:
 networks:
   proxy:
     external: "true"
-

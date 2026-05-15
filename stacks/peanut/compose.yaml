@@ -2,13 +2,15 @@
 services:
   peanut:
     container_name: "peanut"
-    image: "brandawg93/peanut:5.22.0"
+    image: "brandawg93/peanut:6.0.0"
     volumes:
       - "./config:/config"
     restart: "unless-stopped"
     networks:
       - "proxy"
       - "peanut"
+    environment:
+      AUTH_DISABLED: "true"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.peanut.rule=Host(`peanut.${DOMAIN}`)"

@@ -2,7 +2,7 @@
 services:
   nut-upsd:
     container_name: "nut-upsd"
-    image: "instantlinux/nut-upsd:2.8.3-r3"
+    image: "instantlinux/nut-upsd:2.8.3-r4"
     restart: "unless-stopped"
     ports:
       - "3493:3493"
