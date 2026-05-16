@@ -75,7 +75,7 @@ class Host:
     host definition without modifying the core schema.
     """
 
-    def deploy(self, stacks: list[Stack], dry: bool = False) -> tuple[str, dict]:
+    def deploy(self, stacks: list[Stack], files_only: bool = False) -> tuple[str, dict]:
         """
         Convert this host definition into pyinfra inventory data.
 
@@ -99,7 +99,7 @@ class Host:
                 "docker_group": self.docker_group,
                 "docker_use_sudo": self.docker_use_sudo,
                 "compose_stacks_path": self.compose_stacks_path,
-                "dry_run": dry,
+                "files_only": files_only,
                 "stacks": stacks,
                 "env": self.env,
                 "_temp_dir": self.temp_dir,

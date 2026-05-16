@@ -298,10 +298,10 @@ class Stack:
         - Forces recreation of containers to ensure consistency
 
         Notes:
-        - No action is taken if `dry_run` is enabled
+        - No action is taken if `files_only` is enabled
         - Assumes `deploy()` has already been executed
         """
-        if dget("dry_run", False):
+        if dget("files_only", False):
             return
 
         remote_stack_dir = remote_path(self.name)
