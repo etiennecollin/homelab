@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "deploy inventory hosts (dry)",
+      "type": "python",
+      "request": "launch",
+      "module": "pyinfra",
+      "args": [
+        "inventory.py",
+        "deploy/deploy.py",
+        "--limit",
+        "update",
+        "--debug-operations",
+        "--dry",
+        "--yes"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "subProcess": true,
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "env": {
+        "UV_PROJECT_ENVIRONMENT": ".venv",
+        "GEVENT_SUPPORT": "True"
+      }
+    }
+  ]
+}
