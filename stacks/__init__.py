@@ -1,6 +1,7 @@
 from config.stacks import *
 from deploy.utils.stacks import Stack
 
+from .actual_budget import ACTUAL_BUDGET
 from .authelia import AUTHELIA
 from .copyparty import COPYPARTY
 from .ddclient import DDCLIENT
@@ -21,6 +22,7 @@ from .traefik import TRAEFIK
 from .unifi_voucher_manager import UNIFI_VOUCHER_MANAGER
 from .vaultwarden import VAULTWARDEN
 
+actual_budget = Stack(ACTUAL_BUDGET)
 authelia = Stack(AUTHELIA, authelia_config)
 copyparty = Stack(COPYPARTY)
 ddclient = Stack(DDCLIENT)
