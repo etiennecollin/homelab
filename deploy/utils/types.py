@@ -19,22 +19,34 @@ class Directory:
     Path relative to the stack root directory.
     """
 
-    mode: str
+    mode: Optional[str]
     """
-    File mode (permissions) applied to the directory. Defaults to "755".
+    Directory permissions (example: "755").
+    """
+
+    user: Optional[str]
+    """
+    User to own the directory.
+    """
+
+    group: Optional[str]
+    """
+    Group to own the directory.
     """
 
     def __init__(
         self,
         path: Union[str, Path],
         mode: Optional[str] = None,
+        user: Optional[str] = None,
+        group: Optional[str] = None,
     ):
 
         # Normalize to Path objects if strings
         self.path = path if isinstance(path, Path) else Path(path)
-
-        # Sane default: config files are usually readable, not executable
-        self.mode = mode or "755"
+        self.mode = mode
+        self.user = user
+        self.group = group
 
     def resolve_path(self, stack_dir: Path) -> Path:
         """
@@ -81,9 +93,19 @@ class FileCopy:
     Destination path relative to the stack root directory.
     """
 
-    mode: str
+    mode: Optional[str]
     """
-    File permissions. Defaults to "644".
+    File permissions (example: "644" or "600").
+    """
+
+    user: Optional[str]
+    """
+    User to own the directory.
+    """
+
+    group: Optional[str]
+    """
+    Group to own the directory.
     """
 
     def __init__(
@@ -91,6 +113,8 @@ class FileCopy:
         src: Optional[Union[str, Path, IO[Any]]],
         dest: Union[str, Path],
         mode: Optional[str] = None,
+        user: Optional[str] = None,
+        group: Optional[str] = None,
     ):
 
         # Normalize to Path objects if strings
@@ -101,9 +125,9 @@ class FileCopy:
 
         self.src = src
         self.dest = dest
-
-        # Sane default: config files are usually readable, not executable
-        self.mode = mode or "644"
+        self.mode = mode
+        self.user = user
+        self.group = group
 
     def resolve_src(self, stack_dir: Path) -> Path:
         """
@@ -147,7 +171,6 @@ class AutheliaUser:
 
     def hashed(self) -> dict:
         ph = PasswordHasher()
-        ph.verify
         hashed = ph.hash(self.password)
 
         return {

@@ -193,9 +193,9 @@ class Stack:
             files.directory(
                 name=f"[{self.name}] create directory {dir.path}",
                 path=str(dir.resolve_path(remote_stack_dir)),
-                mode=dir.mode,
-                user=dget("docker_user"),
-                group=dget("docker_group"),
+                mode=dir.mode or "755",
+                user=dir.user or dget("docker_user"),
+                group=dir.group or dget("docker_group"),
                 _sudo=True,
             )
 
@@ -223,20 +223,20 @@ class Stack:
                     name=f"[{self.name}] deploy {file.dest}",
                     src=str(file.resolve_src(local_stack_dir)) if isinstance(file.src, Path) else file.src,
                     dest=dest,
-                    mode=file.mode,
+                    mode=file.mode or "644",
                     create_remote_dir=False,  # Enforce usage of self.base.directories
-                    user=dget("docker_user"),
-                    group=dget("docker_group"),
+                    user=file.user or dget("docker_user"),
+                    group=file.group or dget("docker_group"),
                     _sudo=True,
                 )
             else:
                 files.file(
                     name=f"[{self.name}] create file {file.dest}",
                     path=dest,
-                    mode=file.mode,
+                    mode=file.mode or "644",
                     create_remote_dir=False,  # Enforce usage of self.base.directories
-                    user=dget("docker_user"),
-                    group=dget("docker_group"),
+                    user=file.user or dget("docker_user"),
+                    group=file.group or dget("docker_group"),
                     _sudo=True,
                 )
 
@@ -270,10 +270,10 @@ class Stack:
                 name=f"[{self.name}] deploy {file.dest}",
                 src=str(file.resolve_src(local_stack_dir)) if isinstance(file.src, Path) else file.src,
                 dest=str(file.resolve_dest(remote_stack_dir)),
-                mode=file.mode,
+                mode=file.mode or "644",
                 create_remote_dir=False,  # Enforce usage of self.base.directories
-                user=dget("docker_user"),
-                group=dget("docker_group"),
+                user=file.user or dget("docker_user"),
+                group=file.group or dget("docker_group"),
                 _sudo=True,
                 **cast(dict[str, Any], template_context),
             )
