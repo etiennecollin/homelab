@@ -1,3 +1,4 @@
+import uuid
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -90,7 +91,7 @@ class Host:
         - A`(hostname, host_data)` tuple compatible with pyinfra inventory definitions.
         """
         return (
-            self.hostname,
+            f"{self.hostname}.{uuid.uuid4()}",  # We add a UUID to avoid this issue: https://github.com/pyinfra-dev/pyinfra/pull/1757#issuecomment-4510010484
             {
                 "name": self.name,
                 "ssh_hostname": self.hostname,
