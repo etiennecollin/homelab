@@ -3,8 +3,6 @@ from pyinfra.context import config
 from hosts import *
 from stacks import *
 
-config.TEMP_DIR = "/run/user/950"
-
 hosts = [
     raspberrypi.deploy([pihole, nut]),
     truenas.deploy(
