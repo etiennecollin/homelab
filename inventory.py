@@ -20,19 +20,12 @@ hosts = [
             unifi_voucher_manager,
             gatus,
             diun,
+            actual_budget,
         ]
     ),
-    localhost.deploy([], True),
-]
-
-single = [
-    localhost.deploy([traefik], True),
 ]
 
 update = [
-    truenas.deploy([vaultwarden]),
-]
-
-pi = [
-    raspberrypi.deploy([pihole, nut]),
+    truenas.deploy([actual_budget, traefik]),
+    raspberrypi.deploy([pihole]),
 ]
