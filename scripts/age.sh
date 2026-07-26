@@ -100,6 +100,24 @@ enc)
   done
   ;;
 
+enc-cfg)
+  DELETE_AFTER=0
+  # Parse flags
+  while getopts ":d" opt; do
+    case $opt in
+    d) DELETE_AFTER=1 ;;
+    *)
+      echo "Usage: ${0} enc-cfg [-d]"
+      exit 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  encrypt_file "./config/common.py"
+  encrypt_file "./config/stacks.py"
+  ;;
+
 dec)
   DELETE_AFTER=0
   # Parse flags
@@ -124,18 +142,40 @@ dec)
   done
   ;;
 
+dec-cfg)
+  DELETE_AFTER=0
+  # Parse flags
+  while getopts ":d" opt; do
+    case $opt in
+    d) DELETE_AFTER=1 ;;
+    *)
+      echo "Usage: ${0} dec-cfg [-d]"
+      exit 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  decrypt_file "./config/common.py.age"
+  decrypt_file "./config/stacks.py.age"
+  ;;
+
 *)
   cat <<EOF
 Usage:
   ${0} gen
   ${0} enc [-d] <file1> [file2 ...]
   ${0} dec [-d] <file1.age> [file2.age ...]
+  ${0} enc-cfg [-d]
+  ${0} dec-cfg [-d]
 
 Examples:
   ${0} enc config/stacks.py
   ${0} enc -d config/stacks.py
+  ${0} enc-cfg -d
   ${0} dec config/stacks.py.age
   ${0} dec -d config/stacks.py.age
+  ${0} dec-cfg -d
 EOF
   exit 1
   ;;
