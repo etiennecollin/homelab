@@ -2,7 +2,7 @@
 services:
   unifi-voucher-manager:
     container_name: "unifi-voucher-manager"
-    image: "etiennecollin/unifi-voucher-manager:1.4.3"
+    image: "etiennecollin/unifi-voucher-manager:1.5.0"
     restart: "unless-stopped"
     env_file:
       - "stack.env"
