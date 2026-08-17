@@ -1,6 +1,6 @@
 services:
   copyparty:
-    image: "copyparty/iv:1.20.1"
+    image: "copyparty/iv:1.20.20"
     container_name: "copyparty"
     hostname: "copyparty"
     restart: "unless-stopped"
@@ -11,7 +11,7 @@ services:
       PYTHONUNBUFFERED: "1" # Ensures log-messages are not delayed (but can reduce speed a tiny bit)
     volumes:
       - "./config:/cfg:z"
-      - "./share:/w:z"
+      - "/mnt/ssd-ext:/w:z"
     healthcheck:
       # Hide it from logs with "/._" so it matches the default --lf-url filter
       test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]

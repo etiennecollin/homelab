@@ -25,7 +25,7 @@ from .vaultwarden import VAULTWARDEN
 
 actual_budget = Stack(ACTUAL_BUDGET)
 authelia = Stack(AUTHELIA, authelia_config)
-copyparty = Stack(COPYPARTY)
+copyparty = Stack(COPYPARTY, copyparty_config)
 ddclient = Stack(DDCLIENT)
 diun = Stack(DIUN, diun_config)
 dockge = Stack(DOCKGE, dockge_config)

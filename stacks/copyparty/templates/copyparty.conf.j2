@@ -37,13 +37,11 @@
 
 [accounts]
   # username: password
-  etiennecollin: test
+  {{ COPYPARTY_USERNAME }}: {{ COPYPARTY_PASSWORD }}
 
 [/]                       # Create a volume at "/" (the webroot), which will
   /w                      # Share /w (the docker data volume)
   accs:
-    r: *                  # Everyone gets read access, but
-    rwmda: etiennecollin  # The user "etiennecollin" gets read-write-move-delete-admin
+    rwmda.: {{ COPYPARTY_USERNAME }}  # The user "{{ COPYPARTY_USERNAME }}" gets read-write-move-delete-admin
   flags:
     daw
-
