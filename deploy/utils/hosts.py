@@ -91,7 +91,8 @@ class Host:
         - A`(hostname, host_data)` tuple compatible with pyinfra inventory definitions.
         """
         return (
-            f"{self.hostname}.{uuid.uuid4()}",  # We add a UUID to avoid this issue: https://github.com/pyinfra-dev/pyinfra/pull/1757#issuecomment-4510010484
+            # We add a UUID to avoid this issue: https://github.com/pyinfra-dev/pyinfra/pull/1757#issuecomment-4510010484
+            f"{self.hostname}.{uuid.uuid4()}" if self.hostname != "@local" else self.hostname,
             {
                 "name": self.name,
                 "ssh_hostname": self.hostname,
