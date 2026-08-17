@@ -8,6 +8,7 @@ __all__ = [
     "dockge_config",
     "gatus_config",
     "homepage_config",
+    "immich_config",
     "nextcloud_config",
     "ntfy_config",
     "nut_config",
@@ -29,6 +30,7 @@ diun_config: StackConfig
 dockge_config: StackConfig
 gatus_config: StackConfig
 homepage_config: StackConfig
+immich_config: StackConfig
 nextcloud_config: StackConfig
 ntfy_config: StackConfig
 nut_config: StackConfig

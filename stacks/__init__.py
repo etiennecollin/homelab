@@ -9,6 +9,7 @@ from .diun import DIUN
 from .dockge import DOCKGE
 from .gatus import GATUS
 from .homepage import HOMEPAGE
+from .immich import IMMICH
 from .nextcloud import NEXTCLOUD
 from .ntfy import NTFY
 from .nut import NUT
@@ -30,6 +31,7 @@ diun = Stack(DIUN, diun_config)
 dockge = Stack(DOCKGE, dockge_config)
 gatus = Stack(GATUS, gatus_config)
 homepage = Stack(HOMEPAGE)
+immich = Stack(IMMICH, immich_config)
 nextcloud = Stack(NEXTCLOUD, nextcloud_config)
 ntfy = Stack(NTFY)
 nut = Stack(NUT, nut_config)

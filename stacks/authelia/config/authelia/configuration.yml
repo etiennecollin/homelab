@@ -57,6 +57,7 @@ access_control:
     # Bypass auth for services who have their own auth
     - domain:
         - 'copyparty.{{ mustEnv "DOMAIN" }}'
+        - 'immich.{{ mustEnv "DOMAIN" }}'
         - 'ipmi.{{ mustEnv "DOMAIN" }}'
         - 'paperless.{{ mustEnv "DOMAIN" }}'
         - 'pihole.{{ mustEnv "DOMAIN" }}'

@@ -28,6 +28,11 @@
       href: "https://homeassistant.{{HOMEPAGE_VAR_DOMAIN}}/"
       description: "Homeassistant"
       siteMonitor: "https://homeassistant.{{HOMEPAGE_VAR_DOMAIN}}/"
+  - Immich:
+      icon: "immich.svg"
+      href: "https://immich.{{HOMEPAGE_VAR_DOMAIN}}/"
+      description: "Immich"
+      siteMonitor: "https://immich.{{HOMEPAGE_VAR_DOMAIN}}/"
   - IPMI:
       icon: "supermicro.svg"
       href: "https://ipmi.{{HOMEPAGE_VAR_DOMAIN}}/"
