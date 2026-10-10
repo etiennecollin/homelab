@@ -8,6 +8,6 @@ IMMICH = StackBase(
     STACK_NAME,
     directories=[
         Directory("library"),
-        Directory("postgres"),
+        Directory("postgres", mode="700", user="999"),
     ],
 )
