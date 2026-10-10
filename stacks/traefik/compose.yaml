@@ -1,7 +1,7 @@
 ---
 services:
   traefik:
-    image: "traefik:v3.7.1"
+    image: "traefik:v3.7.14"
     container_name: "traefik"
     restart: "unless-stopped"
     depends_on:
@@ -15,14 +15,14 @@ services:
       - "443:443/udp"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "./config/config.yaml:/config.yaml:ro"
+      - "./config/routing.yaml:/routing.yaml:ro"
+      - "./config/traefik.yaml:/traefik.yaml:ro"
       - "./config/acme.json:/acme.json"
     environment:
       DOMAIN: "${DOMAIN}"
       PUBLIC_EMAIL: "${PUBLIC_EMAIL}"
     env_file:
       - "stack.env"
-      - "./config/traefik.env"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN}`)"
@@ -35,7 +35,7 @@ services:
       - "auth"
 
   socket-proxy:
-    image: "lscr.io/linuxserver/socket-proxy:3.2.19"
+    image: "lscr.io/linuxserver/socket-proxy:3.4.6"
     container_name: "socket-proxy"
     restart: "unless-stopped"
     expose:

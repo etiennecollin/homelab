@@ -9,9 +9,11 @@ TRAEFIK = StackBase(
     directories=[
         Directory("config"),
     ],
+    template_files=[
+        FileCopy("templates/traefik.yaml.j2", "config/traefik.yaml"),
+    ],
     static_files=[
-        FileCopy("config/config.yaml", "config/config.yaml"),
-        FileCopy("config/traefik.env", "config/traefik.env"),
+        FileCopy("config/routing.yaml", "config/routing.yaml"),
         FileCopy(None, "config/acme.json", "600"),
     ],
 )
