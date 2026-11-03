@@ -1,6 +1,6 @@
 services:
   pihole:
-    image: "pihole/pihole:2026.07.2"
+    image: "pihole/pihole:2026.10.1"
     container_name: "pihole"
     hostname: "docker-pihole"
     ports:
