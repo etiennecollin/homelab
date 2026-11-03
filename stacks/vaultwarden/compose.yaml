@@ -1,6 +1,6 @@
 services:
   vaultwarden:
-    image: "vaultwarden/server:1.37.1"
+    image: "vaultwarden/server:1.37.5"
     container_name: "vaultwarden"
     restart: "unless-stopped"
     environment:
@@ -17,7 +17,7 @@ services:
       - "proxy"
 
   vaultwarden-backup:
-    image: "ttionya/vaultwarden-backup:1.27.0"
+    image: "ttionya/vaultwarden-backup:1.27.2"
     container_name: "vaultwarden-backup"
     restart: "unless-stopped"
     depends_on:
